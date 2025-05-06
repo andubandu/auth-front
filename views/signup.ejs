@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" href="/css/form.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>Signup</h1>
+
+    <input type="text" id="username" placeholder="Username" required class="form-input">
+    <input type="email" id="email" placeholder="Email" required class="form-input">
+    <input type="password" id="password" placeholder="Password" required class="form-input">
+    <input type="file" id="avatar" class="file-input">
+
+    <img id="avatar-preview" alt="Avatar preview" style="display:none;width:50px;height:50px;border-radius:5px;">
+
+    <p>Have an account already? Click <a href="/login">here</a></p>
+    <br>
+
+    <button id="signup" class="submit-btn">Signup</button>
+
+    <p id="msg"></p>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/signup.js"></script>
+</body>
+</html>

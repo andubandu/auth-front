@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <div id="info"></div>
+
+    <button onclick="logout()">Logout</button>
+
+    <form id="updateForm">
+      <h2>Update Profile</h2>
+      <p>At least one of the fields is required.</p>
+      <input type="text" id="username" name="username" placeholder="Username" /><br />
+      <input type="email" id="email" name="email" placeholder="Email" /><br />
+      <input type="password" id="password" name="password" placeholder="Password" /><br />
+      <input type="file" id="avatar" name="avatar" accept="image/*" /><br />
+      <button type="submit">Update</button>
+    </form>
+
+    <div class="danger-zone">
+      <h2>Danger Zone</h2>
+      <p style="color:#b91c1c;">Permanently delete your account. This action cannot be undone.</p>
+      <button class="danger-btn" onclick="confirmDeleteAccount()">Delete Account</button>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

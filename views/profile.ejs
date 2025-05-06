@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= profile.username %>'s Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+    <h1>Profile: <%= profile.username %></h1>
+    <img src="<%= profile.avatar %>" alt="Avatar" width="150">
+    <p>Email: <%= profile.email %></p>
+    <p>Joined: <%= new Date(profile.createdAt).toDateString() %></p>
+
+    <h2>Posts by <%= profile.username %>:</h2>
+    <ul>
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+                <a href="/posts/<%= post.id %>"></a>
+                <li>
+                    <h3><%= post.title %></h3>
+                    <p><%= post.content %></p>
+                    <% if (post.media && post.media.type === 'video') { %>
+                        <video controls style="max-width: 100%; height: auto;">
+                            <source src="<%= post.media.url %>" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    <% } else if (post.media && post.media.type === 'image') { %>
+                        <img src="<%= post.media.url %>" alt="Post Image" style="max-width: 100%; height: auto;">
+                    <% } %>
+                </li>
+            </a>
+            <% }) %>
+        <% } else { %>
+            <li>No posts available.</li>
+        <% } %>
+    </ul>
+</body>
+</html>

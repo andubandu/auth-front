@@ -97,7 +97,8 @@
     font-size: 1rem;
     margin-top: 15px;
   }
-  
+
+
   @media (max-width: 768px) {
     .form-container {
       padding: 20px;
@@ -112,10 +113,45 @@
       font-size: 1.2rem;
     }
   }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    color: #222;
+    margin: 0;
+    line-height: 1;
+    padding: 6px 0;
+    margin-top: 4px; 
+}
+
+
+#btns a {
+    text-decoration: none;
+    color: #007bff;
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+#btns a:hover {
+    text-decoration: underline;
+}
   
   </style>
 </head>
 <body>
+
+  <header>
+    <h1>socialnetto</h1>
+    <div id="btns"></div>
+</header>
   <div class="form-container">
     <h1>Create New Post</h1>
 
@@ -140,6 +176,27 @@
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
+        function getState() {
+    const btns = document.getElementById('btns');
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    const userData = user ? JSON.parse(user) : null;
+    if (!token || !userData) {
+        btns.innerHTML = `
+            <a href="/login">Login</a>
+            <a href="/signup">Signup</a>
+        `;
+    } else {
+        btns.innerHTML = `
+        <a href="/">Homepage</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/profile/${userData.username}">Your Profile</a>
+        `;
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    getState();
+});
     document.getElementById('createPostForm').addEventListener('submit', async function (event) {
   event.preventDefault();
 

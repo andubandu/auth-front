@@ -125,6 +125,8 @@
     <div id="info"></div>
 
     <button onclick="logout()">Logout</button>
+    <button onclick="window.location.href='/create'">Create Post</button>
+    <button onclick="window.location.href='/'">Go Back Home</button>
 
     <form id="updateForm">
       <h2>Update Profile</h2>
@@ -145,6 +147,8 @@
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
+
+
     let currentUserId = null;
 
 const token = localStorage.getItem('token');

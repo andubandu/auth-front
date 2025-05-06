@@ -132,15 +132,47 @@
     border: 1px solid #ccc;
   }
 
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #222;
+}
+
+#btns a {
+    text-decoration: none;
+    color: #007bff;
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+#btns a:hover {
+    text-decoration: underline;
+}
+
   @media (max-width: 600px) {
     .avatar { width: 30px; height: 30px; }
     .comment-avatar { width: 25px; height: 25px; }
     .btn { padding: 6px 10px; font-size: 0.85rem; }
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
   }
     </style>
 </head>
 <body>
-
+  <header>
+    <h1>socialnetto</h1>
+    <div id="btns"></div>
+</header>
 <div class="post-container">
   <h1><%= post.title %></h1>
   <p><%= post.content %></p>
@@ -217,7 +249,28 @@
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <script>
+  function getState() {
+    const btns = document.getElementById('btns');
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    const userData = user ? JSON.parse(user) : null;
+    if (!token || !userData) {
+        btns.innerHTML = `
+            <a href="/login">Login</a>
+            <a href="/signup">Signup</a>
+        `;
+    } else {
+      btns.innerHTML = `
+      <a href="/">Homepage</a>
+        <a href="/create">Create Post</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/profile/${userData.username}">Your Profile</a>
+        `;
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
+  getState();
   const token = localStorage.getItem('token');
   let currentUserId = null;
 

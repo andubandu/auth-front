@@ -196,7 +196,7 @@ header h1 {
     <span>By <a href="/profile/<%= post.author.username %>"><strong><%= post.author.username %></strong></a></span>
   </div>
 
-  <button id="likeButton" class="btn btn-primary">Like</button> <span id="likeCount"><%= likeCount %></span> likes
+  <button id="likeButton" class="btn btn-primary" style="background-color: transparent;">👍</button> <span id="likeCount"><%= likeCount %></span>
 
   <div id="postActions" style="margin-top:15px;">
     <button onclick="openEditModal()" class="btn btn-primary" style="background-color: transparent;">✏️</button>

@@ -83,7 +83,7 @@ li p {
   <% if (posts.length > 0) { %>
     <% posts.forEach(post => { %>
       <li>
-        <a href="/posts/<%= post.id %>" style="text-decoration: none; color: inherit; display: block;">
+        <a href="/posts/<%= post._id %>" style="text-decoration: none; color: inherit; display: block;">
           <h3><%= post.title %></h3>
           <p><%= post.content %></p>
           <% if (post.media && post.media.type === 'video') { %>

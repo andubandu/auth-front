@@ -7,79 +7,79 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <style>
     * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  form, .signup-container {
-    background: #fff;
-    padding: 30px 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="file"] {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  #avatar-preview {
-    display: block;
-    margin: 10px auto;
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-  }
-  
-  #msg {
-    text-align: center;
-    margin-top: 15px;
-    color: red;
-    min-height: 20px; 
-  }
-  
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    form, .signup-container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #avatar-preview {
+      display: block;
+      margin: 10px auto;
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+    }
+    #msg {
+      text-align: center;
+      margin-top: 15px;
+      color: red;
+      min-height: 20px; 
+    }
+    #loader {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+    #loader img {
+      width: 50px;
+      height: 50px;
+    }
   </style>
 </head>
 <body>
@@ -98,94 +98,108 @@
 
     <button id="signup" class="submit-btn">Signup</button>
 
+    <div id="loader">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading...">
+      <p>Signing up...</p>
+    </div>
+
     <p id="msg"></p>
   </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-        if (localStorage.getItem('token')) {
-    window.location.href = '/dashboard';
-  }
-  
-  const signupBtn = document.getElementById('signup');
-  const avatarInput = document.getElementById('avatar');
-  const avatarPreview = document.getElementById('avatar-preview');
-  
-  signupBtn.addEventListener('click', () => {
-    const username = document.getElementById('username').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const avatar = avatarInput.files[0];
-  
-    if (!username || !email || !password) {
-      Toastify({
-        text: "Please fill all fields.",
-        duration: 3000,
-        backgroundColor: "#FF6347",
-        close: true,
-        gravity: "top",
-        position: "right",
-      }).showToast();
-      return;
+    if (localStorage.getItem('token')) {
+      window.location.href = '/dashboard';
     }
-  
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('email', email);
-    formData.append('password', password);
-    if (avatar) formData.append('avatar', avatar);
-  
-    axios.post('https://express-backend-sigma.vercel.app/auth/signup', formData)
-      .then(res => {
-        const { token, user } = res.data;
-        if (token && user) {
-          localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(user));
+
+    const signupBtn = document.getElementById('signup');
+    const avatarInput = document.getElementById('avatar');
+    const avatarPreview = document.getElementById('avatar-preview');
+    const loader = document.getElementById('loader');
+
+    signupBtn.addEventListener('click', () => {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const avatar = avatarInput.files[0];
+
+      if (!username || !email || !password) {
+        Toastify({
+          text: "Please fill all fields.",
+          duration: 3000,
+          backgroundColor: "#FF6347",
+          close: true,
+          gravity: "top",
+          position: "right",
+        }).showToast();
+        return;
+      }
+
+      // Show loader
+      loader.style.display = 'block';
+      signupBtn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('email', email);
+      formData.append('password', password);
+      if (avatar) formData.append('avatar', avatar);
+
+      axios.post('https://express-backend-sigma.vercel.app/auth/signup', formData)
+        .then(res => {
+          const { token, user } = res.data;
+          if (token && user) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            Toastify({
+              text: "Signup successful! Redirecting...",
+              duration: 3000,
+              backgroundColor: "#4CAF50", 
+              close: true,
+              gravity: "top",
+              position: "right",
+            }).showToast();
+            window.location.href = '/dashboard';
+          } else {
+            Toastify({
+              text: "Signup failed.",
+              duration: 3000,
+              backgroundColor: "#FF6347", 
+              close: true,
+              gravity: "top",
+              position: "right",
+            }).showToast();
+          }
+        })
+        .catch(err => {
           Toastify({
-            text: "Signup successful! Redirecting...",
-            duration: 3000,
-            backgroundColor: "#4CAF50", 
-            close: true,
-            gravity: "top",
-            position: "right",
-          }).showToast();
-          window.location.href = '/dashboard';
-        } else {
-          Toastify({
-            text: "Signup failed.",
+            text: 'email/username in use.',
             duration: 3000,
             backgroundColor: "#FF6347", 
             close: true,
             gravity: "top",
             position: "right",
           }).showToast();
-        }
-      })
-      .catch(err => {
-        Toastify({
-          text: err.response?.data?.message || 'An error occurred during signup.',
-          duration: 3000,
-          backgroundColor: "#FF6347", 
-          close: true,
-          gravity: "top",
-          position: "right",
-        }).showToast();
-      });
-  });
-  
-  avatarInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        avatarPreview.src = event.target.result;
-        avatarPreview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-  
+        })
+        .finally(() => {
+          // Hide loader
+          loader.style.display = 'none';
+          signupBtn.disabled = false;
+        });
+    });
+
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          avatarPreview.src = event.target.result;
+          avatarPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
   </script>
 </body>
 </html>

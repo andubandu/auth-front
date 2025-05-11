@@ -76,6 +76,7 @@ li p {
     <h1>Profile: <%= profile.username %></h1>
     <img src="<%= profile.avatar %>" alt="Avatar" width="150">
     <p>Email: <%= profile.email %></p>
+    <p><em>Bio: <%= profile.bio %></em></p>
     <p>Joined: <%= new Date(profile.createdAt).toDateString() %></p>
 
     <h2>Posts by <%= profile.username %>:</h2>

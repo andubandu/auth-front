@@ -241,7 +241,7 @@ async function updateProfile(event) {
   const username = document.getElementById('username').value.trim();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
-    const bio = document.getElementById('bio').value.trim();
+  const bio = document.getElementById('bio').value.trim();
   const avatar = document.getElementById('avatar').files[0];
 
   if (!username && !email && !password && !avatar && !bio) {
@@ -259,7 +259,7 @@ async function updateProfile(event) {
   if (username) formData.append('username', username);
   if (email) formData.append('email', email);
   if (password) formData.append('password', password);
-    if (bio) formData.append('bio', bio);
+  if (bio) formData.append('bio', bio);
   if (avatar) formData.append('avatar', avatar);
 
   try {
@@ -284,6 +284,15 @@ async function updateProfile(event) {
 
     const updatedUser = await res.json();
     localStorage.setItem('user', JSON.stringify(updatedUser));
+
+    // Update the displayed user info
+    document.getElementById('info').innerHTML = `
+      <p><strong>Username:</strong> ${updatedUser.username}</p>
+      <p><strong>Email:</strong> ${updatedUser.email}</p>
+      <p><strong>Bio:</strong> ${updatedUser.bio || 'No bio available'}</p>
+      <img src="${updatedUser.avatar}" alt="avatar" width="100">
+    `;
+
     Toastify({
       text: "Profile updated successfully!",
       duration: 3000,
@@ -292,7 +301,6 @@ async function updateProfile(event) {
       gravity: "top",
       position: "right",
     }).showToast();
-    window.location.reload();
 
   } catch (err) {
     console.error('Error updating profile:', err);
@@ -306,6 +314,7 @@ async function updateProfile(event) {
     }).showToast();
   }
 }
+
 
 document.getElementById('updateForm').addEventListener('submit', updateProfile);
 

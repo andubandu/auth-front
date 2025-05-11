@@ -7,179 +7,152 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
         * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            color: #333;
-        }
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+}
 
-        body {
-            background-color: #f9f9f9;
-            padding: 20px;
-        }
+body {
+    background-color: #f9f9f9;
+    padding: 20px;
+}
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-        }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
 
-        header h1 {
-            font-size: 2rem;
-            color: #222;
-        }
+header h1 {
+    font-size: 2rem;
+    color: #222;
+}
 
-        #btns a {
-            text-decoration: none;
-            color: #007bff;
-            margin-left: 15px;
-            font-weight: bold;
-        }
+#btns a {
+    text-decoration: none;
+    color: #007bff;
+    margin-left: 15px;
+    font-weight: bold;
+}
 
-        #btns a:hover {
-            text-decoration: underline;
-        }
+#btns a:hover {
+    text-decoration: underline;
+}
 
-        #posts {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            padding: 20px 0;
-        }
+#posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 20px 0;
+}
 
-        .post {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
+.post {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
 
-        .post h1 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #111;
-        }
+.post h1 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #111;
+}
 
-        .post p {
-            margin: 8px 0;
-        }
+.post p {
+    margin: 8px 0;
+}
 
-        .author-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0;
-        }
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
 
-        .author-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
+.author-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
-        .author-info span {
-            font-weight: 600;
-            font-size: 1rem;
-        }
+.author-info span {
+    font-weight: 600;
+    font-size: 1rem;
+}
 
-        .media {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+.media {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
-        .media img,
-        .media video {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
+.media img,
+.media video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
-        .like-button {
-            background-color: #ff4757;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-top: 10px;
-            transition: background-color 0.2s;
-        }
+.like-button {
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
 
-        .like-button:hover {
-            background-color: #e84118;
-        }
+.like-button:hover {
+    background-color: #e84118;
+}
 
-        /* Notification Dropdown */
-        #notifications-container {
-            display: none;
-            position: absolute;
-            right: 20px;
-            top: 60px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 300px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
+@media (max-width: 1024px) {
+    #posts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
-        #notifications-list {
-            padding: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
+@media (max-width: 600px) {
+    #posts {
+        grid-template-columns: 1fr;
+    }
 
-        #notifications-container h3 {
-            padding: 10px;
-            background-color: #f1f1f1;
-            margin: 0;
-        }
+    .post {
+        padding: 15px;
+    }
 
-        .notification-item {
-            margin-bottom: 10px;
-            padding: 5px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-        }
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-        .notification-item button {
-            margin-right: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
+    #btns {
+        margin-top: 10px;
+    }
 
-        /* Responsive Styles */
-        @media (max-width: 1024px) {
-            #posts {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            #posts {
-                grid-template-columns: 1fr;
-            }
-        }
+    .post h1 {
+        font-size: 1.2rem;
+    }
+}
     </style>
 </head>
 <body>
     <header>
         <h1>socialnetto</h1>
-        <div id="btns">
-            <button id="notification-btn" style="background: none; border: none; cursor: pointer;">
-                <img src="https://img.icons8.com/ios/50/000000/mail.png" alt="Notifications" style="width: 30px; height: 30px;" />
-            </button>
-        </div>
+        <div id="btns"></div>
     </header>
 
     <div id="loader" style="display: none; text-align: center; margin-top: 50px;">
@@ -188,85 +161,152 @@
     </div>
 
     <div id="posts"></div>
-
-    <div id="notifications-container">
-        <h3>Friend Requests</h3>
-        <div id="notifications-list">
-            <% if (requests && requests.length > 0) { %>
-                <% requests.forEach(function(request) { %>
-                    <div class="notification-item">
-                        <p><strong><%= request.requesterUsername %></strong> sent you a friend request.</p>
-                        <button onclick="acceptRequest('<%= request.requesterUsername %>')">Accept</button>
-                        <button onclick="declineRequest('<%= request.requesterUsername %>')">Decline</button>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <p>No new friend requests.</p>
-            <% } %>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        document.getElementById('notification-btn').addEventListener('click', () => {
-            const notificationsContainer = document.getElementById('notifications-container');
-            notificationsContainer.style.display = notificationsContainer.style.display === 'block' ? 'none' : 'block';
-        });
-
-        async function acceptRequest(requesterUsername) {
+        async function fetchPosts() {
+            const postsContainer = document.getElementById('posts');
+            const loader = document.getElementById('loader');
             const token = localStorage.getItem('token');
-            if (!token) {
-                showToast('You need to be logged in to accept requests.', '#ff6b6b');
-                return;
-            }
+            const userStr = localStorage.getItem('user');
+            const currentUser = userStr ? JSON.parse(userStr) : null;
+
+            loader.style.display = 'block';
+            postsContainer.innerHTML = '';
 
             try {
-                const response = await fetch('/friends/accept-request', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ requesterUsername })
-                });
+                const response = await fetch('https://express-backend-sigma.vercel.app/posts');
+                const posts = await response.json();
 
-                if (response.ok) {
-                    showToast(`Friend request from ${requesterUsername} accepted.`, '#28a745');
-                    document.getElementById('notifications-container').style.display = 'none';
-                } else {
-                    showToast('Error accepting friend request.', '#ff6b6b');
+                const validPosts = posts.filter(post =>
+                    post.author && post.author.username && post.author.username.trim() !== ''
+                );
+
+                if (validPosts.length === 0) {
+                    postsContainer.innerHTML = '<h3>No posts available</h3>';
+                    return;
                 }
-            } catch (err) {
-                showToast('Error while accepting the request.', '#ff6b6b');
+
+                const postsWithLikes = await Promise.all(validPosts.map(async (post) => {
+                    let likeCount = 0;
+                    let isLikedByUser = false;
+
+                    try {
+                        const likesCountRes = await fetch(https://express-backend-sigma.vercel.app/likes?postId=${post._id}&number=true);
+                        const likesCountData = await likesCountRes.json();
+                        likeCount = typeof likesCountData.count === 'number' ? likesCountData.count : 0;
+
+                        if (currentUser) {
+                            const likesListRes = await fetch(https://express-backend-sigma.vercel.app/likes?postId=${post._id});
+                            const likesListData = await likesListRes.json();
+                            isLikedByUser = likesListData.likes.some(like => like.userId === currentUser.id || like.userId === currentUser._id);
+                        }
+                    } catch (err) {
+                        console.error(Failed to fetch likes for post ${post._id}, err);
+                    }
+
+                    return { ...post, likeCount, isLikedByUser };
+                }));
+
+                postsContainer.innerHTML = postsWithLikes.map(post => {
+                    let mediaHTML = '';
+
+                    if (post.media && post.media.url && post.media.type) {
+                        if (post.media.type === 'video') {
+                            mediaHTML = 
+                                <video controls style="max-width: 100%; height: auto;">
+                                    <source src="${post.media.url}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            ;
+                        } else if (post.media.type === 'image') {
+                            mediaHTML = 
+                                <img src="${post.media.url}" alt="Post Media" style="max-width: 100%; height: auto;" />
+                            ;
+                        }
+                    }
+
+                    const likeBtnClass = post.isLikedByUser ? 'like-button liked' : 'like-button';
+
+                    return 
+                        <div class="post" id="${post._id}">
+                            <a href="/posts/${post._id}"><h1>${post.title}</h1></a>
+                            <p>${post.content}</p>
+
+                            <div class="author-info">
+                                <img src="${post.author.avatar}" alt="Avatar of ${post.author.username}" />
+                                <a href="/profile/${post.author.username}"><span>${post.author.username}</span></a>
+                            </div>
+
+                            <p>${new Date(post.createdAt).toLocaleDateString()}</p>
+
+                            <div class="media">${mediaHTML}</div>
+
+                            <button class="${likeBtnClass}" data-id="${post._id}">👍 ${post.likeCount}</button>
+                        </div>
+                    ;
+                }).join('');
+
+                attachLikeButtonHandlers();
+
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+                postsContainer.innerHTML = '<h3>Failed to load posts</h3>';
+            } finally {
+                loader.style.display = 'none';
             }
         }
 
-        async function declineRequest(requesterUsername) {
+        function attachLikeButtonHandlers() {
+            const buttons = document.querySelectorAll('.like-button');
             const token = localStorage.getItem('token');
-            if (!token) {
-                showToast('You need to be logged in to decline requests.', '#ff6b6b');
-                return;
-            }
 
-            try {
-                const response = await fetch('/friends/decline-request', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ requesterUsername })
+            buttons.forEach(button => {
+                button.addEventListener('click', async () => {
+                    const postId = button.dataset.id;
+                    const userStr = localStorage.getItem('user');
+                    const currentUser = userStr ? JSON.parse(userStr) : null;
+
+                    if (!token || !currentUser) {
+                        showToast('You need to be logged in to like a post', '#ff6b6b');
+                        return;
+                    }
+
+                    button.disabled = true;
+
+                    try {
+                        const response = await fetch(https://express-backend-sigma.vercel.app/likes/${postId}, {
+                            method: 'POST',
+                            headers: { 'Authorization': Bearer ${token} }
+                        });
+
+                        if (response.ok) {
+                            const [countRes, listRes] = await Promise.all([
+                                fetch(https://express-backend-sigma.vercel.app/likes?postId=${postId}&number=true),
+                                fetch(https://express-backend-sigma.vercel.app/likes?postId=${postId})
+                            ]);
+
+                            const countData = await countRes.json();
+                            const listData = await listRes.json();
+
+                            const updatedCount = typeof countData.count === 'number' ? countData.count : 0;
+                            const isLikedByUser = listData.likes.some(like => like.userId === currentUser.id || like.userId === currentUser._id);
+
+                            button.textContent = 👍 ${updatedCount};
+                            button.classList.toggle('liked', isLikedByUser);
+
+                            showToast(isLikedByUser ? 'Post liked' : 'Disliked post', isLikedByUser ? '#28a745' : '#ff6b6b');
+                        } else {
+                            showToast('Failed to like/dislike post', '#ff6b6b');
+                        }
+
+                    } catch (error) {
+                        console.error('Error liking/unliking post:', error);
+                        showToast('An error occurred', '#ff6b6b');
+                    } finally {
+                        button.disabled = false;
+                    }
                 });
-
-                if (response.ok) {
-                    showToast(`Friend request from ${requesterUsername} declined.`, '#ff6b6b');
-                    document.getElementById('notifications-container').style.display = 'none';
-                } else {
-                    showToast('Error declining friend request.', '#ff6b6b');
-                }
-            } catch (err) {
-                showToast('Error while declining the request.', '#ff6b6b');
-            }
+            });
         }
 
         function showToast(message, bgColor = "#333") {
@@ -279,36 +319,30 @@
             }).showToast();
         }
 
-        async function fetchPosts() {
-            const postsContainer = document.getElementById('posts');
-            const loader = document.getElementById('loader');
-
-            loader.style.display = 'block';
-            postsContainer.innerHTML = '';
-
-            try {
-                const response = await fetch('/posts');
-                const posts = await response.json();
-
-                if (posts.length === 0) {
-                    postsContainer.innerHTML = '<h3>No posts available</h3>';
-                    return;
-                }
-
-                postsContainer.innerHTML = posts.map(post => `
-                    <div class="post">
-                        <h1>${post.title}</h1>
-                        <p>${post.content}</p
-                                </div>            `).join('');
-        } catch (error) {
-            postsContainer.innerHTML = '<h3>Failed to load posts</h3>';
-        } finally {
-            loader.style.display = 'none';
+        function getState() {
+            const btns = document.getElementById('btns');
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            const userData = user ? JSON.parse(user) : null;
+            if (!token || !userData) {
+                btns.innerHTML = 
+                    <a href="/login">Login</a>
+                    <a href="/signup">Signup</a>
+                ;
+            } else {
+                btns.innerHTML = 
+                <a href="/create">Create Post</a>
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/profile/${userData.username}">Your Profile</a>
+                ;
+            }
         }
-    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchPosts();
-    });
-</script>
-</body> </html>
+        document.addEventListener('DOMContentLoaded', () => {
+            getState();
+            fetchPosts();
+        });
+    </script>
+</body>
+
+</html>

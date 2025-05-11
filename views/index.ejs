@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Posts</title>
@@ -173,7 +172,6 @@
         }
     </style>
 </head>
-
 <body>
     <header>
         <h1>socialnetto</h1>
@@ -194,7 +192,6 @@
     <div id="notifications-container">
         <h3>Friend Requests</h3>
         <div id="notifications-list">
-            <!-- Notifications will be populated here -->
             <% if (requests && requests.length > 0) { %>
                 <% requests.forEach(function(request) { %>
                     <div class="notification-item">
@@ -301,20 +298,17 @@
                 postsContainer.innerHTML = posts.map(post => `
                     <div class="post">
                         <h1>${post.title}</h1>
-                        <p>${post.content}</p>
-                    </div>
-                `).join('');
-            } catch (error) {
-                postsContainer.innerHTML = '<h3>Failed to load posts</h3>';
-            } finally {
-                loader.style.display = 'none';
-            }
+                        <p>${post.content}</p
+                                </div>            `).join('');
+        } catch (error) {
+            postsContainer.innerHTML = '<h3>Failed to load posts</h3>';
+        } finally {
+            loader.style.display = 'none';
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchPosts();
-        });
-    </script>
-</body>
-
-</html>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchPosts();
+    });
+</script>
+</body> </html>

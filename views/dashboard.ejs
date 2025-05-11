@@ -160,6 +160,7 @@
       <input type="text" id="username" name="username" placeholder="Username" /><br />
       <input type="email" id="email" name="email" placeholder="Email" /><br />
       <input type="password" id="password" name="password" placeholder="Password" /><br />
+      <input type="text" name="bio" id="bio" placeholder="Bio" /><br />
       <input type="file" id="avatar" name="avatar" accept="image/*" /><br />
       <button type="submit">Update</button>
     </form>
@@ -198,6 +199,7 @@ currentUserId = user.id || user._id;
 document.getElementById('info').innerHTML = `
   <p><strong>Username:</strong> ${user.username}</p>
   <p><strong>Email:</strong> ${user.email}</p>
+    <p><strong>Bio:</strong> ${user.bio || 'No bio available'}</p>
   <img src="${user.avatar}" alt="avatar" width="100">
 `;
 
@@ -239,9 +241,10 @@ async function updateProfile(event) {
   const username = document.getElementById('username').value.trim();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
+    const bio = document.getElementById('bio').value.trim();
   const avatar = document.getElementById('avatar').files[0];
 
-  if (!username && !email && !password && !avatar) {
+  if (!username && !email && !password && !avatar && !bio) {
     Toastify({
       text: "Please provide at least one field to update.",
       duration: 3000,
@@ -256,6 +259,7 @@ async function updateProfile(event) {
   if (username) formData.append('username', username);
   if (email) formData.append('email', email);
   if (password) formData.append('password', password);
+    if (bio) formData.append('bio', bio);
   if (avatar) formData.append('avatar', avatar);
 
   try {

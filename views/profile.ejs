@@ -30,7 +30,6 @@
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900"><%= profile.username %></h1>
                         <p class="text-gray-600 mt-1"><%= profile.email %></p>
-                        <p class="text-gray-500 mt-2"><%= profile.bio || 'No bio available' %></p>
                         <p class="text-sm text-gray-500 mt-2">Joined <%= new Date(profile.createdAt).toLocaleDateString('en-US', { 
                             year: 'numeric', 
                             month: 'long', 

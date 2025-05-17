@@ -77,13 +77,6 @@
                         </div>
 
                         <div>
-                            <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
-                            <textarea id="bio" rows="3" 
-                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                placeholder="Tell us about yourself"></textarea>
-                        </div>
-
-                        <div>
                             <label for="avatar" class="block text-sm font-medium text-gray-700">Profile Picture</label>
                             <input type="file" id="avatar" accept="image/*"
                                 class="mt-1 block w-full px-3 py-2 text-sm text-gray-700 
@@ -146,7 +139,6 @@
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900">${userData.username}</h2>
                         <p class="text-gray-600">${userData.email}</p>
-                        <p class="text-gray-500 mt-2">${userData.bio || 'No bio available'}</p>
                     </div>
                 </div>
             `;
@@ -188,10 +180,9 @@
             const username = document.getElementById('username').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
-            const bio = document.getElementById('bio').value.trim();
             const avatar = document.getElementById('avatar').files[0];
 
-            if (!username && !email && !password && !bio && !avatar) {
+            if (!username && !email && !password && !avatar) {
                 Toastify({
                     text: "Please provide at least one field to update",
                     duration: 3000,
@@ -206,7 +197,6 @@
             if (username) formData.append('username', username);
             if (email) formData.append('email', email);
             if (password) formData.append('password', password);
-            if (bio) formData.append('bio', bio);
             if (avatar) formData.append('avatar', avatar);
 
             try {

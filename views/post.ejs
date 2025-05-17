@@ -1,511 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title><%= post.title %></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title><%= post.title %> - socialnetto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <style>
-      body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-  }
-
-  h1, h2, h3 {
-    margin-bottom: 15px;
-  }
-
-  a {
-    color: #1e90ff;
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-
-  .post-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
-  }
-
-  .post-container img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 10px 0;
-  }
-
-  .author-line {
-    display: flex;
-    align-items: center;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    color: #666;
-  }
-
-  .avatar, .comment-avatar {
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 8px;
-  }
-
-  .avatar {
-    width: 40px;
-    height: 40px;
-  }
-
-  .comment-avatar {
-    width: 30px;
-    height: 30px;
-  }
-
-  .btn {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    margin-right: 8px;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-primary { background-color: #1e90ff; color: white; }
-  .btn-primary:hover { background-color: #187bcd; }
-
-  .btn-danger { background-color: #dc3545; color: white; }
-  .btn-danger:hover { background-color: #b02a37; }
-
-  .btn-secondary { background-color: #6c757d; color: white; }
-  .btn-secondary:hover { background-color: #565e64; }
-
-  .comment-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    margin-bottom: 15px;
-  }
-
-  #comment-section textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    resize: vertical;
-    margin-bottom: 10px;
-  }
-
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
-
-  .modal-content input,
-  .modal-content textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
-}
-
-header h1 {
-    font-size: 2rem;
-    color: #222;
-}
-
-#btns a {
-    text-decoration: none;
-    color: #007bff;
-    margin-left: 15px;
-    font-weight: bold;
-}
-
-#btns a:hover {
-    text-decoration: underline;
-}
-
-  @media (max-width: 600px) {
-    .avatar { width: 30px; height: 30px; }
-    .comment-avatar { width: 25px; height: 25px; }
-    .btn { padding: 6px 10px; font-size: 0.85rem; }
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-  }
-    </style>
 </head>
-<body>
-  <header>
-    <h1>socialnetto</h1>
-    <div id="btns"></div>
-</header>
-<div class="post-container">
-  <h1><%= post.title %></h1>
-  <p><%= post.content %></p>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600">socialnetto</h1>
+                </div>
+                <div id="btns" class="flex items-center space-x-4"></div>
+            </div>
+        </div>
+    </nav>
 
-  <% if (post.media && post.media.url) { %>
-    <% if (post.media.type === 'video') { %>
-      <video controls style="max-width: 50%; height: auto;">
-        <source src="<%= post.media.url %>" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    <% } else { %>
-      <img src="<%= post.media.url %>" alt="Post media">
-    <% } %>
-  <% } %>
-  
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <article class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div class="p-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4"><%= post.title %></h1>
+                
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="<%= post.author.avatar %>" alt="<%= post.author.username %>" 
+                        class="w-12 h-12 rounded-full object-cover">
+                    <div>
+                        <a href="/profile/<%= post.author.username %>" 
+                            class="text-lg font-medium text-gray-900 hover:text-indigo-600 transition-colors">
+                            <%= post.author.username %>
+                        </a>
+                        <p class="text-sm text-gray-500">
+                            <%= new Date(post.createdAt).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            }) %>
+                        </p>
+                    </div>
+                </div>
 
-  <div class="author-line">
-    <% if (post.author.avatar) { %>
-      <img src="<%= post.author.avatar %>" alt="Author Avatar" class="avatar">
-    <% } %>
-    <span>By <a href="/profile/<%= post.author.username %>"><strong><%= post.author.username %></strong></a></span>
-  </div>
+                <p class="text-gray-700 text-lg mb-6"><%= post.content %></p>
 
-  <button id="likeButton" class="btn btn-primary" style="background-color: transparent;">👍</button> <span id="likeCount"><%= likeCount %></span>
+                <% if (post.media && post.media.url) { %>
+                    <div class="rounded-lg overflow-hidden mb-6">
+                        <% if (post.media.type === 'video') { %>
+                            <video controls class="w-full">
+                                <source src="<%= post.media.url %>" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        <% } else { %>
+                            <img src="<%= post.media.url %>" alt="Post media" class="w-full">
+                        <% } %>
+                    </div>
+                <% } %>
 
-  <div id="postActions" style="margin-top:15px;">
-    <button onclick="openEditModal()" class="btn btn-primary" style="background-color: transparent;">✏️</button>
-    <button onclick="openDeleteModal()" class="btn btn-danger" style="background-color: transparent;">🗑️</button>
-  </div>
-</div>
+                <div class="flex items-center space-x-4">
+                    <button id="likeButton" 
+                        class="flex items-center space-x-2 px-4 py-2 bg-pink-100 text-pink-600 rounded-lg hover:bg-pink-200 transition-colors">
+                        <span>👍</span>
+                        <span id="likeCount"><%= likeCount %></span>
+                    </button>
 
-<h2>Comments</h2>
-<% comments.forEach(comment => { %>
-  <div class="comment-card">
-    <div class="author-line">
-      <% if (comment.author.avatar) { %>
-        <img src="<%= comment.author.avatar %>" alt="Commenter Avatar" class="comment-avatar">
-      <% } %>
-      <a href="/profile/<%= comment.author.username %>">
-        <strong id="commentAuthor-<%= comment._id %>" data-author-id="<%= comment.author._id %>"><%= comment.author.username %></strong>
-      </a>
+                    <div id="postActions" class="flex space-x-2">
+                        <button onclick="openEditModal()" 
+                            class="p-2 text-gray-600 hover:text-indigo-600 transition-colors">
+                            ✏️
+                        </button>
+                        <button onclick="openDeleteModal()" 
+                            class="p-2 text-gray-600 hover:text-red-600 transition-colors">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <section class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Comments</h2>
+
+                <div id="comment-section" class="space-y-6">
+                    <% if (comments.length === 0) { %>
+                        <p class="text-gray-500 text-center py-4">No comments yet. Be the first to comment!</p>
+                    <% } %>
+
+                    <% comments.forEach(comment => { %>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <img src="<%= comment.author.avatar %>" alt="<%= comment.author.username %>" 
+                                    class="w-8 h-8 rounded-full object-cover">
+                                <a href="/profile/<%= comment.author.username %>" 
+                                    class="font-medium text-gray-900 hover:text-indigo-600 transition-colors">
+                                    <%= comment.author.username %>
+                                </a>
+                            </div>
+                            <p class="text-gray-700"><%= comment.content %></p>
+                            <div id="commentActions-<%= comment._id %>" class="mt-2 space-x-2 hidden">
+                                <button onclick="startEdit('<%= comment._id %>')" 
+                                    class="text-sm text-gray-600 hover:text-indigo-600 transition-colors">
+                                    ✏️ Edit
+                                </button>
+                                <button onclick="deleteComment('<%= post._id %>', '<%= comment._id %>')" 
+                                    class="text-sm text-gray-600 hover:text-red-600 transition-colors">
+                                    🗑️ Delete
+                                </button>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-lg w-full p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Edit Post</h3>
+            <input type="text" id="editTitle" placeholder="New title" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md mb-4">
+            <textarea id="editContent" rows="4" placeholder="New content" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"></textarea>
+            <input type="file" id="editMedia" accept="image/*, video/*" class="mb-4">
+            <p id="editMsg" class="text-red-600 mb-4"></p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeEditModal()" 
+                    class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+                    Cancel
+                </button>
+                <button onclick="submitEditPost()" 
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                    Save Changes
+                </button>
+            </div>
+        </div>
     </div>
-    <p><%= comment.content %></p>
-    <div id="commentActions-<%= comment._id %>">
-      <button onclick="startEdit('<%= comment._id %>')" class="btn btn-secondary">✏️</button>
-      <button onclick="deleteComment('<%= post._id %>', '<%= comment._id %>')" class="btn btn-danger">🗑️</button>
+
+    <!-- Delete Modal -->
+    <div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-lg w-full p-6">
+            <h3 class="text-xl font-bold text-red-600 mb-4">Delete Post</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to delete this post? This action cannot be undone.</p>
+            <p id="deleteMsg" class="text-red-600 mb-4"></p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeDeleteModal()" 
+                    class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+                    Cancel
+                </button>
+                <button onclick="confirmDeletePost()" 
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    Delete Post
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
-<% }) %>
 
-<div id="comment-section"></div>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        function getState() {
+            const btns = document.getElementById('btns');
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            const userData = user ? JSON.parse(user) : null;
+            
+            if (!token || !userData) {
+                btns.innerHTML = `
+                    <a href="/login" class="text-gray-600 hover:text-indigo-600 transition-colors">Login</a>
+                    <a href="/signup" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</a>
+                `;
+            } else {
+                btns.innerHTML = `
+                    <a href="/" class="text-gray-600 hover:text-indigo-600 transition-colors">Home</a>
+                    <a href="/create" class="text-gray-600 hover:text-indigo-600 transition-colors">Create Post</a>
+                    <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 transition-colors">Dashboard</a>
+                    <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
+                `;
+            }
+        }
 
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <h3>Edit Post</h3>
-    <input type="text" id="editTitle" placeholder="New title (optional)">
-    <textarea id="editContent" rows="4" placeholder="New content (optional)"></textarea>
-    <input type="file" id="editMedia">
-    <p id="editMsg" style="color:red;"></p>
-    <button onclick="submitEditPost()" class="btn btn-primary">Save</button>
-    <button onclick="closeEditModal()" class="btn btn-secondary">Cancel</button>
-  </div>
-</div>
+        document.addEventListener('DOMContentLoaded', function() {
+            getState();
 
-<div id="deleteModal" class="modal">
-  <div class="modal-content">
-    <h3>Confirm Delete</h3>
-    <p>Are you sure you want to delete this post?</p>
-    <p id="deleteMsg" style="color:red;"></p>
-    <button onclick="confirmDeletePost()" class="btn btn-danger">Delete</button>
-    <button onclick="closeDeleteModal()" class="btn btn-secondary">Cancel</button>
-  </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+            const token = localStorage.getItem('token');
+            let currentUserId = null;
 
-<script>
-  function getState() {
-    const btns = document.getElementById('btns');
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    const userData = user ? JSON.parse(user) : null;
-    if (!token || !userData) {
-        btns.innerHTML = `
-            <a href="/login">Login</a>
-            <a href="/signup">Signup</a>
-        `;
-    } else {
-      btns.innerHTML = `
-      <a href="/">Homepage</a>
-        <a href="/create">Create Post</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/profile/${userData.username}">Your Profile</a>
-        `;
-    }
-}
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    currentUserId = payload.id;
+                } catch (e) {
+                    console.error('Failed to decode token:', e);
+                }
+            }
 
-document.addEventListener("DOMContentLoaded", function() {
-  getState();
-  const token = localStorage.getItem('token');
-  let currentUserId = null;
+            // Show/hide comment action buttons
+            const commentElements = document.querySelectorAll('[id^="commentActions-"]');
+            commentElements.forEach(el => {
+                const commentId = el.id.split('-')[1];
+                const authorId = document.getElementById(`commentAuthor-${commentId}`)?.dataset.authorId;
+                if (currentUserId && currentUserId === authorId) {
+                    el.classList.remove('hidden');
+                }
+            });
 
-  if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      currentUserId = payload.id;
-    } catch (e) {
-      console.error('Failed to decode token:', e);
-    }
-  }
+            // Show/hide post actions
+            const postAuthorId = "<%= post.author._id %>";
+            if (!(currentUserId && currentUserId === postAuthorId)) {
+                document.getElementById('postActions').classList.add('hidden');
+            }
 
-  const commentElements = document.querySelectorAll('[id^="commentActions-"]');
-  commentElements.forEach(el => {
-    const commentId = el.id.split('-')[1];
-    const authorId = document.getElementById(`commentAuthor-${commentId}`).dataset.authorId;
-    if (currentUserId && currentUserId === authorId) {
-      el.style.display = 'block';
-    } else {
-      el.style.display = 'none';
-    }
-  });
+            // Setup like button
+            const likeButton = document.getElementById('likeButton');
+            const likeCountElement = document.getElementById('likeCount');
+            const postId = "<%= post._id %>";
 
-  const postAuthorId = "<%= post.author._id %>";
-  if (!(currentUserId && currentUserId === postAuthorId)) {
-    document.getElementById('postActions').style.display = 'none';
-  }
+            likeButton.addEventListener('click', async () => {
+                if (!token) {
+                    showToast('You need to be logged in to like posts', 'error');
+                    return;
+                }
 
-  const likeButton = document.getElementById('likeButton');
-  const likeCountElement = document.getElementById('likeCount');
-  const postId = "<%= post._id %>";
+                try {
+                    const response = await fetch(`https://express-backend-sigma.vercel.app/likes/${postId}`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
 
-  likeButton.addEventListener('click', async () => {
-    if (!token) {
-      alert('You need to be logged in to like a post');
-      return;
-    }
-    try {
-      const likeResponse = await fetch(`https://express-backend-sigma.vercel.app/likes/${postId}`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+                    if (response.ok) {
+                        const countRes = await fetch(`https://express-backend-sigma.vercel.app/likes?postId=${postId}&number=true`);
+                        const data = await countRes.json();
+                        likeCountElement.textContent = data.count;
+                        showToast('Like updated successfully', 'success');
+                    } else {
+                        showToast('Failed to update like', 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast('Error updating like', 'error');
+                }
+            });
 
-      if (likeResponse.ok) {
-        const countRes = await fetch(`https://express-backend-sigma.vercel.app/likes?postId=${postId}&number=true`);
-        const data = await countRes.json();
-        likeCountElement.textContent = data.count;
-      } else {
-        alert('Failed to like the post');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error liking post');
-    }
-  });
+            // Setup comment section
+            if (token) {
+                const commentSection = document.getElementById('comment-section');
+                const commentForm = document.createElement('div');
+                commentForm.className = 'mt-8';
+                commentForm.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Add a Comment</h3>
+                    <textarea id="commentContent" rows="3" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Write your comment here..."></textarea>
+                    <button id="submitComment" 
+                        class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                        Post Comment
+                    </button>
+                    <p id="commentMsg" class="text-red-600 mt-2"></p>
+                `;
+                commentSection.appendChild(commentForm);
 
-  const commentSection = document.getElementById('comment-section');
-  if (token) {
-    commentSection.innerHTML = `
-      <h3>Add a Comment</h3>
-      <textarea id="commentContent" rows="3" placeholder="Write your comment here..."></textarea><br>
-      <button id="submitComment" class="btn btn-primary">Post Comment</button>
-      <p id="commentMsg" style="color:red; margin-top:5px;"></p>
-    `;
+                document.getElementById('submitComment').addEventListener('click', async () => {
+                    const content = document.getElementById('commentContent').value.trim();
+                    const commentMsg = document.getElementById('commentMsg');
 
-    document.getElementById('submitComment').addEventListener('click', async () => {
-      const content = document.getElementById('commentContent').value.trim();
-      const commentMsg = document.getElementById('commentMsg');
-      if (!content) {
-        commentMsg.textContent = 'Comment cannot be empty.';
-        return;
-      }
+                    if (!content) {
+                        commentMsg.textContent = 'Comment cannot be empty';
+                        return;
+                    }
 
-      try {
-        const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ content })
+                    try {
+                        const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ content })
+                        });
+
+                        if (res.ok) {
+                            location.reload();
+                        } else {
+                            const err = await res.json();
+                            commentMsg.textContent = err.error || 'Failed to post comment';
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        commentMsg.textContent = 'Error posting comment';
+                    }
+                });
+            }
         });
 
-        if (res.ok) {
-          location.reload();
-        } else {
-          const err = await res.json();
-          commentMsg.textContent = err.error || 'Failed to post comment.';
+        function showToast(message, type = 'info') {
+            const bgColors = {
+                success: '#10B981',
+                error: '#EF4444',
+                info: '#3B82F6'
+            };
+
+            Toastify({
+                text: message,
+                duration: 3000,
+                className: "rounded-lg",
+                style: {
+                    background: bgColors[type] || bgColors.info
+                }
+            }).showToast();
         }
-      } catch (err) {
-        console.error(err);
-        commentMsg.textContent = 'Error posting comment.';
-      }
-    });
-  }
-});
 
-function openEditModal() {
-  document.getElementById('editModal').style.display = 'flex';
-  document.getElementById('editMsg').textContent = '';
-}
-function closeEditModal() {
-  document.getElementById('editModal').style.display = 'none';
-}
-async function submitEditPost() {
-  const token = localStorage.getItem('token');
-  const postId = "<%= post._id %>";
-  const title = document.getElementById('editTitle').value.trim();
-  const content = document.getElementById('editContent').value.trim();
-  const mediaFile = document.getElementById('editMedia').files[0];
-  const msg = document.getElementById('editMsg');
+        // Modal functions
+        function openEditModal() {
+            document.getElementById('editModal').classList.remove('hidden');
+        }
 
-  if (!title && !content && !mediaFile) {
-    msg.textContent = 'At least one field must be updated.';
-    return;
-  }
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
 
-  if (!token) {
-    msg.textContent = 'You must be logged in to edit the post.';
-    return;
-  }
+        async function submitEditPost() {
+            const token = localStorage.getItem('token');
+            const postId = "<%= post._id %>";
+            const title = document.getElementById('editTitle').value.trim();
+            const content = document.getElementById('editContent').value.trim();
+            const mediaFile = document.getElementById('editMedia').files[0];
+            const msg = document.getElementById('editMsg');
 
-  const formData = new FormData();
-  if (title) formData.append('title', title);
-  if (content) formData.append('content', content);
-  if (mediaFile) formData.append('media', mediaFile);
+            if (!title && !content && !mediaFile) {
+                msg.textContent = 'At least one field must be updated';
+                return;
+            }
 
-  try {
-    const res = await fetch(`https://express-backend-sigma.vercel.app/posts/upd/${postId}`, {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${token}` },
-      body: formData
-    });
+            if (!token) {
+                msg.textContent = 'You must be logged in to edit the post';
+                return;
+            }
 
-    if (res.ok) {
-      location.reload();
-    } else {
-      const err = await res.json();
-      msg.textContent = err.error || 'Failed to update post.';
-    }
-  } catch (err) {
-    console.error(err);
-    msg.textContent = 'Error updating post.';
-  }
-}
+            const formData = new FormData();
+            if (title) formData.append('title', title);
+            if (content) formData.append('content', content);
+            if (mediaFile) formData.append('media', mediaFile);
 
-function openDeleteModal() {
-  document.getElementById('deleteModal').style.display = 'flex';
-  document.getElementById('deleteMsg').textContent = '';
-}
-function closeDeleteModal() {
-  document.getElementById('deleteModal').style.display = 'none';
-}
-async function confirmDeletePost() {
-  const token = localStorage.getItem('token');
-  const postId = "<%= post._id %>";
-  const msg = document.getElementById('deleteMsg');
+            try {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/posts/upd/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
 
-  if (!token) {
-    msg.textContent = 'You must be logged in to delete the post.';
-    return;
-  }
+                if (res.ok) {
+                    location.reload();
+                } else {
+                    const err = await res.json();
+                    msg.textContent = err.error || 'Failed to update post';
+                }
+            } catch (err) {
+                console.error(err);
+                msg.textContent = 'Error updating post';
+            }
+        }
 
-  try {
-    const res = await fetch(`https://express-backend-sigma.vercel.app/posts/del/${postId}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+        function openDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
 
-    if (res.ok) {
-      window.location.href = '/';
-    } else {
-      const err = await res.json();
-      msg.textContent = err.error || 'Failed to delete post.';
-    }
-  } catch (err) {
-    console.error(err);
-    msg.textContent = 'Error deleting post.';
-  }
-}
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
 
-async function startEdit(commentId) {
-  const element = document.getElementById(`commentAuthor-${commentId}`).closest('.comment-card');
-  const contentPara = element.querySelector('p');
-  const oldContent = contentPara.textContent;
-  const newContent = prompt('Edit your comment:', oldContent);
-  const token = localStorage.getItem('token');
-  const postId = "<%= post._id %>";
+        async function confirmDeletePost() {
+            const token = localStorage.getItem('token');
+            const postId = "<%= post._id %>";
+            const msg = document.getElementById('deleteMsg');
 
-  if (newContent !== null && token) {
-    try {
-      const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}/${commentId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ content: newContent })
-      });
+            if (!token) {
+                msg.textContent = 'You must be logged in to delete the post';
+                return;
+            }
 
-      if (res.ok) {
-        contentPara.textContent = newContent;
-      } else {
-        alert('Failed to update comment');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error updating comment');
-    }
-  }
-}
+            try {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/posts/del/${postId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
 
-async function deleteComment(postId, commentId) {
-  const confirmDelete = confirm('Are you sure you want to delete this comment?');
-  const token = localStorage.getItem('token');
+                if (res.ok) {
+                    window.location.href = '/';
+                } else {
+                    const err = await res.json();
+                    msg.textContent = err.error || 'Failed to delete post';
+                }
+            } catch (err) {
+                console.error(err);
+                msg.textContent = 'Error deleting post';
+            }
+        }
 
-  if (confirmDelete && token) {
-    try {
-      const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}/${commentId}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+        async function startEdit(commentId) {
+            const element = document.getElementById(`commentAuthor-${commentId}`).closest('.comment-card');
+            const contentPara = element.querySelector('p');
+            const oldContent = contentPara.textContent;
+            const newContent = prompt('Edit your comment:', oldContent);
+            const token = localStorage.getItem('token');
+            const postId = "<%= post._id %>";
 
-      if (res.ok) {
-        document.getElementById(`commentAuthor-${commentId}`).closest('.comment-card').remove();
-      } else {
-        alert('Failed to delete comment');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error deleting comment');
-    }
-  }
-}
-</script>
+            if (newContent !== null && token) {
+                try {
+                    const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}/${commentId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ content: newContent })
+                    });
 
+                    if (res.ok) {
+                        contentPara.textContent = newContent;
+                        showToast('Comment updated successfully', 'success');
+                    } else {
+                        showToast('Failed to update comment', 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast('Error updating comment', 'error');
+                }
+            }
+        }
+
+        async function deleteComment(postId, commentId) {
+            if (!confirm('Are you sure you want to delete this comment?')) {
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showToast('You must be logged in to delete comments', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}/${commentId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.ok) {
+                    const commentElement = document.getElementById(`commentAuthor-${commentId}`).closest('.bg-gray-50');
+                    commentElement.remove();
+                    showToast('Comment deleted successfully', 'success');
+                } else {
+                    showToast('Failed to delete comment', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Error deleting comment', 'error');
+            }
+        }
+    </script>
 </body>
 </html>

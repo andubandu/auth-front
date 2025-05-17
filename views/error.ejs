@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Error</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #fdf2f8;
-      color: #7e22ce;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2rem;
-    }
-    a {
-      margin-top: 20px;
-      color: #7e22ce;
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Error - socialnetto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1><%= message %></h1>
-  <a href="/">Go back home</a>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="text-center">
+        <h1 class="text-6xl font-bold text-indigo-600 mb-4">Oops!</h1>
+        <p class="text-xl text-gray-600 mb-8"><%= message %></p>
+        <a href="/" 
+            class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+            Go back home
+        </a>
+    </div>
 </body>
 </html>

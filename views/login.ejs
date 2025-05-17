@@ -1,177 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-  
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-  
-    form, .signup-container {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-  
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #333;
-    }
-  
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-  
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 4px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-  
-    button:hover {
-      background-color: #0056b3;
-    }
-  
-    #msg {
-      text-align: center;
-      margin-top: 15px;
-      color: red;
-      min-height: 20px; 
-    }
-
-    #loader {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    #loader img {
-      width: 50px;
-      height: 50px;
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <title>Login - socialnetto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
-<body>
-  <div class="form-container">
-    <h1>Login</h1>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full mx-4">
+        <div class="bg-white rounded-xl shadow-xl p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Welcome Back</h1>
+                <p class="text-gray-600 mt-2">Please sign in to your account</p>
+            </div>
 
-    <input type="text" id="username" placeholder="Username" required>
-    <input type="password" id="password" placeholder="Password" required>
+            <div class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" 
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Enter your username">
+                </div>
 
-    <p>Don't have an account? Click <a href="/signup">here</a></p>
-    <br>
-    <button id="login">Login</button>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" 
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Enter your password">
+                </div>
 
-    <div id="loader">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading...">
-      <p>Logging in...</p>
+                <div class="text-sm text-center">
+                    <p class="text-gray-600">
+                        Don't have an account? 
+                        <a href="/signup" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
+                    </p>
+                </div>
+
+                <button id="login" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Sign In
+                </button>
+            </div>
+
+            <div id="loader" class="hidden mt-4">
+                <div class="flex items-center justify-center space-x-2">
+                    <div class="w-4 h-4 bg-indigo-600 rounded-full animate-bounce"></div>
+                    <div class="w-4 h-4 bg-indigo-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                    <div class="w-4 h-4 bg-indigo-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                </div>
+                <p class="text-center text-sm text-gray-600 mt-2">Signing in...</p>
+            </div>
+        </div>
     </div>
 
-    <p id="msg"></p>
-  </div>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        if (localStorage.getItem('token')) {
+            window.location.href = '/';
+        }
 
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    if (localStorage.getItem('token')) {
-      window.location.href = '/';
-    }
+        const loginBtn = document.getElementById('login');
+        const loader = document.getElementById('loader');
 
-    const loginBtn = document.getElementById('login');
-    const loader = document.getElementById('loader');
-  
-    loginBtn.addEventListener('click', () => {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-  
-      if (!username || !password) {
-        Toastify({
-          text: "Please fill in both fields.",
-          duration: 3000,
-          backgroundColor: "#FF6347", 
-          close: true,
-          gravity: "top",
-          position: "right",
-        }).showToast();
-        return;
-      }
-  
-      // Show loader
-      loader.style.display = 'block';
-      loginBtn.disabled = true;
+        loginBtn.addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
 
-      axios.post('https://express-backend-sigma.vercel.app/auth/login', { username, password })
-        .then(res => {
-          const { token, user } = res.data;
-          if (token && user) {
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            Toastify({
-              text: "Login successful! Redirecting...",
-              duration: 3000,
-              backgroundColor: "#4CAF50",
-              close: true,
-              gravity: "top",
-              position: "right",
-            }).showToast();
-            window.location.href = '/dashboard';
-          } else {
-            Toastify({
-              text: "Login failed.",
-              duration: 3000,
-              backgroundColor: "#FF6347",
-              close: true,
-              gravity: "top",
-              position: "right",
-            }).showToast();
-          }
-        })
-        .catch(err => {
-          Toastify({
-            text: "Account doesn't exist/password is incorrect.",
-            duration: 3000,
-            backgroundColor: "#FF6347", 
-            close: true,
-            gravity: "top",
-            position: "right",
-          }).showToast();
-        })
-        .finally(() => {
-          // Hide loader
-          loader.style.display = 'none';
-          loginBtn.disabled = false;
+            if (!username || !password) {
+                Toastify({
+                    text: "Please fill in both fields",
+                    duration: 3000,
+                    className: "rounded-lg",
+                    style: {
+                        background: "#EF4444",
+                    }
+                }).showToast();
+                return;
+            }
+
+            loader.classList.remove('hidden');
+            loginBtn.disabled = true;
+
+            axios.post('https://express-backend-sigma.vercel.app/auth/login', { username, password })
+                .then(res => {
+                    const { token, user } = res.data;
+                    if (token && user) {
+                        localStorage.setItem('token', token);
+                        localStorage.setItem('user', JSON.stringify(user));
+                        Toastify({
+                            text: "Login successful! Redirecting...",
+                            duration: 3000,
+                            className: "rounded-lg",
+                            style: {
+                                background: "#10B981",
+                            }
+                        }).showToast();
+                        window.location.href = '/dashboard';
+                    }
+                })
+                .catch(() => {
+                    Toastify({
+                        text: "Invalid username or password",
+                        duration: 3000,
+                        className: "rounded-lg",
+                        style: {
+                            background: "#EF4444",
+                        }
+                    }).showToast();
+                })
+                .finally(() => {
+                    loader.classList.add('hidden');
+                    loginBtn.disabled = false;
+                });
         });
-    });
-  </script>
+    </script>
 </body>
 </html>

@@ -1,444 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <style>
-        body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
-      margin: 0;
-      min-height: 100vh;
-      padding: 2rem;
-      color: #334e68;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      color: #243b53;
-      margin-bottom: 2rem;
-      font-size: 2rem;
-      border-bottom: 2px solid #e3e8ee;
-      padding-bottom: 1rem;
-    }
-
-    #info {
-      background: #f0f4f8;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-    }
-
-    #info img {
-      border-radius: 50%;
-      border: 3px solid white;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      display: block;
-      margin: 1rem 0;
-      object-fit: cover;
-      width: 100px;
-      height: 100px;
-    }
-
-    button {
-      background: #0f609b;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.2s;
-      margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    button:hover {
-      background: #0d558b;
-    }
-
-    #updateForm {
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 2px solid #e3e8ee;
-    }
-
-    h2 {
-      color: #334e68;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      color: #627d98;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 2px solid #e3e8ee;
-      border-radius: 6px;
-      font-size: 1rem;
-      transition: border-color 0.2s;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #0f609b;
-    }
-
-    input[type="file"] {
-      border: none;
-      padding: 0.5rem 0;
-    }
-
-    .danger-zone {
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 2px solid #f87171;
-    }
-
-    .danger-zone h2 {
-      color: #b91c1c;
-    }
-
-    .danger-btn {
-      background: #e02424;
-    }
-
-    .danger-btn:hover {
-      background: #c81e1e;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 1rem;
-      }
-
-      .container {
-        padding: 1rem;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      button {
-        width: 100%;
-        margin-right: 0;
-      }
-
-      #info img {
-        margin: 1rem auto;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Dashboard - socialnetto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
-<body>
-  <div class="container">
-    <h1>Dashboard</h1>
-    <div id="info"></div>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600">socialnetto</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-gray-600 hover:text-indigo-600 transition-colors">Home</a>
+                    <a href="/create" class="text-gray-600 hover:text-indigo-600 transition-colors">Create Post</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <button onclick="logout()">Logout</button>
-    <button onclick="window.location.href='/create'">Create Post</button>
-    <button onclick="window.location.href='/'">Go Back Home</button>
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-8">
+                <div id="info" class="mb-8">
+                    <div class="flex items-center space-x-4">
+                        <img src="" alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-indigo-200">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900"></h2>
+                            <p class="text-gray-600"></p>
+                        </div>
+                    </div>
+                </div>
 
-    <form id="updateForm">
-      <h2>Update Profile</h2>
-      <p>At least one of the fields is required.</p>
-      <input type="text" id="username" name="username" placeholder="Username" /><br />
-      <input type="email" id="email" name="email" placeholder="Email" /><br />
-      <input type="password" id="password" name="password" placeholder="Password" /><br />
-      <input type="text" name="bio" id="bio" placeholder="Bio" /><br />
-      <input type="file" id="avatar" name="avatar" accept="image/*" /><br />
-      <button type="submit">Update</button>
-    </form>
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <button onclick="logout()" 
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                        Logout
+                    </button>
+                    <button onclick="window.location.href='/create'" 
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                        Create Post
+                    </button>
+                    <button onclick="window.location.href='/'" 
+                        class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        Go Home
+                    </button>
+                </div>
 
-    <div class="danger-zone">
-      <h2>Danger Zone</h2>
-      <p style="color:#b91c1c;">Permanently delete your account. This action cannot be undone.</p>
-      <button class="danger-btn" onclick="confirmDeleteAccount()">Delete Account</button>
-    </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
+                <form id="updateForm" class="space-y-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Update Profile</h3>
+                    <p class="text-sm text-gray-600">Update any of the fields below to change your profile information</p>
 
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                            <input type="text" id="username" 
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="New username">
+                        </div>
 
-    let currentUserId = null;
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="email" 
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="New email">
+                        </div>
 
-const token = localStorage.getItem('token');
-const userStr = localStorage.getItem('user');
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" id="password" 
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="New password">
+                        </div>
 
-if (!token || !userStr) {
-  Toastify({
-    text: "Not logged in. Redirecting to login.",
-    duration: 3000, 
-    backgroundColor: "#FF6347", 
-    close: true,
-    gravity: "top",
-    position: "right",
-  }).showToast();
-  window.location.href = '/login';
-}
+                        <div>
+                            <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
+                            <textarea id="bio" rows="3" 
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="Tell us about yourself"></textarea>
+                        </div>
 
-const user = JSON.parse(userStr);
-currentUserId = user.id || user._id;
+                        <div>
+                            <label for="avatar" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+                            <input type="file" id="avatar" accept="image/*"
+                                class="mt-1 block w-full px-3 py-2 text-sm text-gray-700 
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-indigo-50 file:text-indigo-700
+                                hover:file:bg-indigo-100">
+                        </div>
+                    
+                    </div>
 
-document.getElementById('info').innerHTML = `
-  <p><strong>Username:</strong> ${user.username}</p>
-  <p><strong>Email:</strong> ${user.email}</p>
-    <p><strong>Bio:</strong> ${user.bio || 'No bio available'}</p>
-  <img src="${user.avatar}" alt="avatar" width="100">
-`;
+                    <button type="submit" 
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Update Profile
+                    </button>
+                </form>
 
-axios.get('https://express-backend-sigma.vercel.app/users/currentProfile', {
-  headers: { 'Authorization': `Bearer ${token}` }
-})
-.then(res => {
-  const freshUser = res.data;
-  document.getElementById('info').innerHTML = `
-    <p><strong>Username:</strong> ${freshUser.username}</p>
-    <p><strong>Email:</strong> ${freshUser.email}</p>
-    <img src="${freshUser.avatar}" alt="avatar" width="100">
-  `;
-  localStorage.setItem('user', JSON.stringify(freshUser));
-  currentUserId = freshUser.id || freshUser._id;
-})
-.catch(err => {
-  console.warn('Could not refresh profile:', err);
-  Toastify({
-    text: "Error fetching profile. Please try again later.",
-    duration: 3000,
-    backgroundColor: "#FF6347",
-    close: true,
-    gravity: "top", 
-    position: "right",
-  }).showToast();
-});
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-red-600">Danger Zone</h3>
+                        <p class="text-sm text-gray-600">Once you delete your account, there is no going back. Please be certain.</p>
+                        <button onclick="confirmDeleteAccount()" 
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                            Delete Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  window.location.href = '/login';
-}
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let currentUserId = null;
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
 
-async function updateProfile(event) {
-  event.preventDefault();
-
-  const formData = new FormData();
-  const username = document.getElementById('username').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const bio = document.getElementById('bio').value.trim();
-  const avatar = document.getElementById('avatar').files[0];
-
-  if (!username && !email && !password && !avatar && !bio) {
-    Toastify({
-      text: "Please provide at least one field to update.",
-      duration: 3000,
-      backgroundColor: "#FF6347",
-      close: true,
-      gravity: "top", 
-      position: "right",
-    }).showToast();
-    return;
-  }
-
-  if (username) formData.append('username', username);
-  if (email) formData.append('email', email);
-  if (password) formData.append('password', password);
-  if (bio) formData.append('bio', bio);
-  if (avatar) formData.append('avatar', avatar);
-
-  try {
-    const res = await fetch(`https://express-backend-sigma.vercel.app/users/upd/${currentUserId}`, {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${token}` },
-      body: formData
-    });
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      Toastify({
-        text: errorData.message || 'Error updating profile.',
-        duration: 3000,
-        backgroundColor: "#FF6347", 
-        close: true,
-        gravity: "top", 
-        position: "right",
-      }).showToast();
-      return;
-    }
-
-    const updatedUser = await res.json();
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-
-    // Update the displayed user info
-    document.getElementById('info').innerHTML = `
-      <p><strong>Username:</strong> ${updatedUser.username}</p>
-      <p><strong>Email:</strong> ${updatedUser.email}</p>
-      <p><strong>Bio:</strong> ${updatedUser.bio || 'No bio available'}</p>
-      <img src="${updatedUser.avatar}" alt="avatar" width="100">
-    `;
-
-    Toastify({
-      text: "Profile updated successfully!",
-      duration: 3000,
-      backgroundColor: "#4CAF50", 
-      close: true,
-      gravity: "top",
-      position: "right",
-    }).showToast();
-
-  } catch (err) {
-    console.error('Error updating profile:', err);
-    Toastify({
-      text: 'An error occurred while updating your profile.',
-      duration: 3000,
-      backgroundColor: "#FF6347",
-      close: true,
-      gravity: "top", 
-      position: "right",
-    }).showToast();
-  }
-}
-
-
-document.getElementById('updateForm').addEventListener('submit', updateProfile);
-
-function createModal({ title, message, confirmText, cancelText, onConfirm }) {
-  const overlay = document.createElement('div');
-  overlay.style.position = 'fixed';
-  overlay.style.top = '0';
-  overlay.style.left = '0';
-  overlay.style.width = '100%';
-  overlay.style.height = '100%';
-  overlay.style.background = 'rgba(0,0,0,0.5)';
-  overlay.style.display = 'flex';
-  overlay.style.alignItems = 'center';
-  overlay.style.justifyContent = 'center';
-  overlay.style.zIndex = '1000';
-
-  const box = document.createElement('div');
-  box.style.background = 'white';
-  box.style.padding = '2rem';
-  box.style.borderRadius = '12px';
-  box.style.maxWidth = '400px';
-  box.style.width = '90%';
-  box.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-  box.style.textAlign = 'center';
-
-  const titleEl = document.createElement('h2');
-  titleEl.textContent = title;
-  titleEl.style.marginBottom = '1rem';
-  titleEl.style.color = '#b91c1c';
-
-  const msgEl = document.createElement('p');
-  msgEl.textContent = message;
-  msgEl.style.marginBottom = '2rem';
-
-  const btns = document.createElement('div');
-  btns.style.display = 'flex';
-  btns.style.justifyContent = 'space-between';
-
-  const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = cancelText;
-  cancelBtn.style.background = '#e2e8f0';
-  cancelBtn.style.color = '#334e68';
-  cancelBtn.style.padding = '0.5rem 1rem';
-  cancelBtn.style.borderRadius = '6px';
-  cancelBtn.style.border = 'none';
-  cancelBtn.style.cursor = 'pointer';
-
-  const confirmBtn = document.createElement('button');
-  confirmBtn.textContent = confirmText;
-  confirmBtn.style.background = '#e02424';
-  confirmBtn.style.color = 'white';
-  confirmBtn.style.padding = '0.5rem 1rem';
-  confirmBtn.style.borderRadius = '6px';
-  confirmBtn.style.border = 'none';
-  confirmBtn.style.cursor = 'pointer';
-
-  btns.appendChild(cancelBtn);
-  btns.appendChild(confirmBtn);
-  box.appendChild(titleEl);
-  box.appendChild(msgEl);
-  box.appendChild(btns);
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-
-  cancelBtn.onclick = () => document.body.removeChild(overlay);
-  confirmBtn.onclick = () => {
-    document.body.removeChild(overlay);
-    onConfirm();
-  };
-  overlay.onclick = (e) => {
-    if (e.target === overlay) document.body.removeChild(overlay);
-  };
-}
-
-function confirmDeleteAccount() {
-  createModal({
-    title: "Confirm Account Deletion",
-    message: "Are you sure you want to permanently delete your account? This action CANNOT be undone.",
-    confirmText: "DO IT!!",
-    cancelText: "Cancel",
-    onConfirm: async () => {
-      try {
-        const res = await fetch(`https://express-backend-sigma.vercel.app/users/del/${currentUserId}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!res.ok) {
-          const errorData = await res.json();
-          Toastify({
-            text: errorData.message || 'Error deleting account.',
-            duration: 3000,
-            backgroundColor: "#FF6347",
-            close: true,
-            gravity: "top", 
-            position: "right",
-          }).showToast();
-          return;
+        if (!token || !userStr) {
+            Toastify({
+                text: "Not logged in. Redirecting to login...",
+                duration: 3000,
+                className: "rounded-lg",
+                style: {
+                    background: "#EF4444",
+                }
+            }).showToast();
+            window.location.href = '/login';
         }
 
-        Toastify({
-          text: "Your account has been deleted.",
-          duration: 3000,
-          backgroundColor: "#FF6347", 
-          close: true,
-          gravity: "top",
-          position: "right",
-        }).showToast();
-        logout();
+        const user = JSON.parse(userStr);
+        currentUserId = user.id || user._id;
 
-      } catch (err) {
-        console.error('Error deleting account:', err);
-        Toastify({
-          text: 'An error occurred while deleting your account.',
-          duration: 3000,
-          backgroundColor: "#FF6347", 
-          close: true,
-          gravity: "top", 
-          position: "right",
-        }).showToast();
-      }
-    }
-  });
-}
-  </script>
+        function updateUserInfo(userData) {
+            const infoDiv = document.getElementById('info');
+            infoDiv.innerHTML = `
+                <div class="flex items-center space-x-4">
+                    <img src="${userData.avatar}" alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-indigo-200">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">${userData.username}</h2>
+                        <p class="text-gray-600">${userData.email}</p>
+                        <p class="text-gray-500 mt-2">${userData.bio || 'No bio available'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        updateUserInfo(user);
+
+        axios.get('https://express-backend-sigma.vercel.app/users/currentProfile', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => {
+            const freshUser = res.data;
+            updateUserInfo(freshUser);
+            localStorage.setItem('user', JSON.stringify(freshUser));
+            currentUserId = freshUser.id || freshUser._id;
+        })
+        .catch(err => {
+            console.warn('Could not refresh profile:', err);
+            Toastify({
+                text: "Error fetching profile",
+                duration: 3000,
+                className: "rounded-lg",
+                style: {
+                    background: "#EF4444",
+                }
+            }).showToast();
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const bio = document.getElementById('bio').value.trim();
+            const avatar = document.getElementById('avatar').files[0];
+
+            if (!username && !email && !password && !bio && !avatar) {
+                Toastify({
+                    text: "Please provide at least one field to update",
+                    duration: 3000,
+                    className: "rounded-lg",
+                    style: {
+                        background: "#EF4444",
+                    }
+                }).showToast();
+                return;
+            }
+
+            if (username) formData.append('username', username);
+            if (email) formData.append('email', email);
+            if (password) formData.append('password', password);
+            if (bio) formData.append('bio', bio);
+            if (avatar) formData.append('avatar', avatar);
+
+            try {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/users/upd/${currentUserId}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+
+                if (!res.ok) {
+                    throw await res.json();
+                }
+
+                const updatedUser = await res.json();
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                updateUserInfo(updatedUser);
+
+                Toastify({
+                    text: "Profile updated successfully!",
+                    duration: 3000,
+                    className: "rounded-lg",
+                    style: {
+                        background: "#10B981",
+                    }
+                }).showToast();
+
+                // Reset form
+                event.target.reset();
+
+            } catch (err) {
+                Toastify({
+                    text: err.message || "Error updating profile",
+                    duration: 3000,
+                    className: "rounded-lg",
+                    style: {
+                        background: "#EF4444",
+                    }
+                }).showToast();
+            }
+        });
+
+        function confirmDeleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                fetch(`https://express-backend-sigma.vercel.app/users/del/${currentUserId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => {
+                    if (res.ok) {
+                        Toastify({
+                            text: "Account deleted successfully",
+                            duration: 3000,
+                            className: "rounded-lg",
+                            style: {
+                                background: "#10B981",
+                            }
+                        }).showToast();
+                        logout();
+                    } else {
+                        throw new Error('Failed to delete account');
+                    }
+                })
+                .catch(err => {
+                    Toastify({
+                        text: err.message || "Error deleting account",
+                        duration: 3000,
+                        className: "rounded-lg",
+                        style: {
+                            background: "#EF4444",
+                        }
+                    }).showToast();
+                });
+            }
+        }
+    </script>
 </body>
 </html>

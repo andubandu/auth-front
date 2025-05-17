@@ -2,165 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Posts</title>
+    <title>socialnetto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <style>
-        * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    color: #333;
-}
-
-body {
-    background-color: #f9f9f9;
-    padding: 20px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
-}
-
-header h1 {
-    font-size: 2rem;
-    color: #222;
-}
-
-#btns a {
-    text-decoration: none;
-    color: #007bff;
-    margin-left: 15px;
-    font-weight: bold;
-}
-
-#btns a:hover {
-    text-decoration: underline;
-}
-
-#posts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    padding: 20px 0;
-}
-
-.post {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.post h1 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #111;
-}
-
-.post p {
-    margin: 8px 0;
-}
-
-.author-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 10px 0;
-}
-
-.author-info img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.author-info span {
-    font-weight: 600;
-    font-size: 1rem;
-}
-
-.media {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.media img,
-.media video {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.like-button {
-    background-color: #ff4757;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    margin-top: 10px;
-    transition: background-color 0.2s;
-}
-
-.like-button:hover {
-    background-color: #e84118;
-}
-
-@media (max-width: 1024px) {
-    #posts {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    #posts {
-        grid-template-columns: 1fr;
-    }
-
-    .post {
-        padding: 15px;
-    }
-
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    #btns {
-        margin-top: 10px;
-    }
-
-    .post h1 {
-        font-size: 1.2rem;
-    }
-}
-    </style>
 </head>
-<body>
-    <header>
-        <h1>socialnetto</h1>
-        <div id="btns"></div>
-    </header>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600">socialnetto</h1>
+                </div>
+                <div id="btns" class="flex items-center space-x-4"></div>
+            </div>
+        </div>
+    </nav>
 
-    <div id="loader" style="display: none; text-align: center; margin-top: 50px;">
-        <img src="https://res.cloudinary.com/dyuabsnoo/image/upload/v1746875532/cat-kitten_rwstll.gif" alt="Loading..." style="width: 320px; height: 269px;">
-        <h1>loading posts</h1>
+    <div id="loader" class="hidden">
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-lg shadow-xl text-center">
+                <img src="https://res.cloudinary.com/dyuabsnoo/image/upload/v1746875532/cat-kitten_rwstll.gif" alt="Loading..." class="w-64 h-auto mx-auto mb-4">
+                <h2 class="text-xl font-semibold text-gray-700">Loading posts...</h2>
+            </div>
+        </div>
     </div>
 
-    <div id="posts"></div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div id="posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         async function fetchPosts() {
@@ -170,7 +41,7 @@ header h1 {
             const userStr = localStorage.getItem('user');
             const currentUser = userStr ? JSON.parse(userStr) : null;
 
-            loader.style.display = 'block';
+            loader.classList.remove('hidden');
             postsContainer.innerHTML = '';
 
             try {
@@ -182,7 +53,7 @@ header h1 {
                 );
 
                 if (validPosts.length === 0) {
-                    postsContainer.innerHTML = '<h3>No posts available</h3>';
+                    postsContainer.innerHTML = '<h3 class="text-xl font-semibold text-gray-600 col-span-full text-center">No posts available</h3>';
                     return;
                 }
 
@@ -213,35 +84,49 @@ header h1 {
                     if (post.media && post.media.url && post.media.type) {
                         if (post.media.type === 'video') {
                             mediaHTML = `
-                                <video controls style="max-width: 100%; height: auto;">
+                                <video controls class="w-full h-auto rounded-lg shadow-md">
                                     <source src="${post.media.url}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             `;
                         } else if (post.media.type === 'image') {
                             mediaHTML = `
-                                <img src="${post.media.url}" alt="Post Media" style="max-width: 100%; height: auto;" />
+                                <img src="${post.media.url}" alt="Post Media" class="w-full h-auto rounded-lg shadow-md" />
                             `;
                         }
                     }
 
-                    const likeBtnClass = post.isLikedByUser ? 'like-button liked' : 'like-button';
+                    const likeBtnClass = post.isLikedByUser ? 
+                        'bg-pink-600 text-white' : 
+                        'bg-white text-pink-600 border border-pink-600';
 
                     return `
-                        <div class="post" id="${post._id}">
-                            <a href="/posts/${post._id}"><h1>${post.title}</h1></a>
-                            <p>${post.content}</p>
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                            <div class="p-6">
+                                <a href="/posts/${post._id}" class="block mb-4">
+                                    <h2 class="text-xl font-semibold text-gray-900 hover:text-indigo-600 transition-colors">${post.title}</h2>
+                                </a>
+                                <p class="text-gray-600 mb-4">${post.content}</p>
 
-                            <div class="author-info">
-                                <img src="${post.author.avatar}" alt="Avatar of ${post.author.username}" />
-                                <a href="/profile/${post.author.username}"><span>${post.author.username}</span></a>
+                                <div class="flex items-center mb-4">
+                                    <img src="${post.author.avatar}" alt="Avatar of ${post.author.username}" 
+                                        class="w-10 h-10 rounded-full object-cover" />
+                                    <a href="/profile/${post.author.username}" 
+                                        class="ml-3 font-medium text-gray-900 hover:text-indigo-600 transition-colors">
+                                        ${post.author.username}
+                                    </a>
+                                </div>
+
+                                <p class="text-sm text-gray-500 mb-4">${new Date(post.createdAt).toLocaleDateString()}</p>
+
+                                ${mediaHTML}
+
+                                <button class="mt-4 px-4 py-2 rounded-lg ${likeBtnClass} hover:opacity-90 transition-opacity flex items-center space-x-2" 
+                                    data-id="${post._id}">
+                                    <span>👍</span>
+                                    <span>${post.likeCount}</span>
+                                </button>
                             </div>
-
-                            <p>${new Date(post.createdAt).toLocaleDateString()}</p>
-
-                            <div class="media">${mediaHTML}</div>
-
-                            <button class="${likeBtnClass}" data-id="${post._id}">👍 ${post.likeCount}</button>
                         </div>
                     `;
                 }).join('');
@@ -250,14 +135,14 @@ header h1 {
 
             } catch (error) {
                 console.error('Error fetching posts:', error);
-                postsContainer.innerHTML = '<h3>Failed to load posts</h3>';
+                postsContainer.innerHTML = '<h3 class="text-xl font-semibold text-red-600 col-span-full text-center">Failed to load posts</h3>';
             } finally {
-                loader.style.display = 'none';
+                loader.classList.add('hidden');
             }
         }
 
         function attachLikeButtonHandlers() {
-            const buttons = document.querySelectorAll('.like-button');
+            const buttons = document.querySelectorAll('[data-id]');
             const token = localStorage.getItem('token');
 
             buttons.forEach(button => {
@@ -291,12 +176,12 @@ header h1 {
                             const updatedCount = typeof countData.count === 'number' ? countData.count : 0;
                             const isLikedByUser = listData.likes.some(like => like.userId === currentUser.id || like.userId === currentUser._id);
 
-                            button.textContent = `👍 ${updatedCount}`;
-                            button.classList.toggle('liked', isLikedByUser);
+                            button.innerHTML = `<span>👍</span><span>${updatedCount}</span>`;
+                            button.className = `mt-4 px-4 py-2 rounded-lg flex items-center space-x-2 ${isLikedByUser ? 'bg-pink-600 text-white' : 'bg-white text-pink-600 border border-pink-600'} hover:opacity-90 transition-opacity`;
 
-                            showToast(isLikedByUser ? 'Post liked' : 'Disliked post', isLikedByUser ? '#28a745' : '#ff6b6b');
+                            showToast(isLikedByUser ? 'Post liked!' : 'Post unliked', isLikedByUser ? '#28a745' : '#ff6b6b');
                         } else {
-                            showToast('Failed to like/dislike post', '#ff6b6b');
+                            showToast('Failed to like/unlike post', '#ff6b6b');
                         }
 
                     } catch (error) {
@@ -315,7 +200,8 @@ header h1 {
                 duration: 2000,
                 gravity: "top",
                 position: "right",
-                backgroundColor: bgColor
+                backgroundColor: bgColor,
+                className: "rounded-lg"
             }).showToast();
         }
 
@@ -324,16 +210,17 @@ header h1 {
             const token = localStorage.getItem('token');
             const user = localStorage.getItem('user');
             const userData = user ? JSON.parse(user) : null;
+            
             if (!token || !userData) {
                 btns.innerHTML = `
-                    <a href="/login">Login</a>
-                    <a href="/signup">Signup</a>
+                    <a href="/login" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Login</a>
+                    <a href="/signup" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</a>
                 `;
             } else {
                 btns.innerHTML = `
-                <a href="/create">Create Post</a>
-                    <a href="/dashboard">Dashboard</a>
-                    <a href="/profile/${userData.username}">Your Profile</a>
+                    <a href="/create" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Create Post</a>
+                    <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Dashboard</a>
+                    <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
                 `;
             }
         }
@@ -344,5 +231,4 @@ header h1 {
         });
     </script>
 </body>
-
 </html>

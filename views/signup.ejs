@@ -1,205 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Signup</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    form, .signup-container {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="file"] {
-      width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 4px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #avatar-preview {
-      display: block;
-      margin: 10px auto;
-      width: 100px;
-      height: 100px;
-      border-radius: 8px;
-      object-fit: cover;
-      border: 1px solid #ccc;
-    }
-    #msg {
-      text-align: center;
-      margin-top: 15px;
-      color: red;
-      min-height: 20px; 
-    }
-    #loader {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-    }
-    #loader img {
-      width: 50px;
-      height: 50px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Sign Up - socialnetto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
-<body>
-  <div class="form-container">
-    <h1>Signup</h1>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full">
+        <div class="bg-white rounded-xl shadow-xl p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Create Account</h1>
+                <p class="text-gray-600 mt-2">Join our community today</p>
+            </div>
 
-    <input type="text" id="username" placeholder="Username" required class="form-input">
-    <input type="email" id="email" placeholder="Email" required class="form-input">
-    <input type="password" id="password" placeholder="Password" required class="form-input">
-    <input type="file" id="avatar" class="file-input">
+            <div class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" 
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Choose a username">
+                </div>
 
-    <img id="avatar-preview" alt="Avatar preview" style="display:none;width:50px;height:50px;border-radius:5px;">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" 
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Enter your email">
+                </div>
 
-    <p>Have an account already? Click <a href="/login">here</a></p>
-    <br>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" 
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        placeholder="Create a password">
+                </div>
 
-    <button id="signup" class="submit-btn">Signup</button>
+                <div>
+                    <label for="avatar" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+                    <input type="file" id="avatar" accept="image/*"
+                        class="mt-1 block w-full px-3 py-2 text-sm text-gray-700 
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-indigo-50 file:text-indigo-700
+                        hover:file:bg-indigo-100">
+                </div>
 
-    <div id="loader">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading...">
-      <p>Signing up...</p>
+                <div class="relative">
+                    <img id="avatar-preview" alt="Avatar preview" class="hidden w-20 h-20 rounded-full mx-auto object-cover border-2 border-indigo-500">
+                </div>
+
+                <div class="text-sm text-center">
+                    <p class="text-gray-600">
+                        Already have an account? 
+                        <a href="/login" class="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a>
+                    </p>
+                </div>
+
+                <button id="signup" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Create Account
+                </button>
+            </div>
+
+            <div id="loader" class="hidden mt-4">
+                <div class="flex items-center justify-center space-x-2">
+                    <div class="w-4 h-4 bg-indigo-600 rounded-full animate-bounce"></div>
+                    <div class="w-4 h-4 bg-indigo-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                    <div class="w-4 h-4 bg-indigo-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                </div>
+                <p class="text-center text-sm text-gray-600 mt-2">Creating your account...</p>
+            </div>
+        </div>
     </div>
 
-    <p id="msg"></p>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    if (localStorage.getItem('token')) {
-      window.location.href = '/dashboard';
-    }
-
-    const signupBtn = document.getElementById('signup');
-    const avatarInput = document.getElementById('avatar');
-    const avatarPreview = document.getElementById('avatar-preview');
-    const loader = document.getElementById('loader');
-
-    signupBtn.addEventListener('click', () => {
-      const username = document.getElementById('username').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const avatar = avatarInput.files[0];
-
-      if (!username || !email || !password) {
-        Toastify({
-          text: "Please fill all fields.",
-          duration: 3000,
-          backgroundColor: "#FF6347",
-          close: true,
-          gravity: "top",
-          position: "right",
-        }).showToast();
-        return;
-      }
-
-      // Show loader
-      loader.style.display = 'block';
-      signupBtn.disabled = true;
-
-      const formData = new FormData();
-      formData.append('username', username);
-      formData.append('email', email);
-      formData.append('password', password);
-      if (avatar) formData.append('avatar', avatar);
-
-      axios.post('https://express-backend-sigma.vercel.app/auth/signup', formData)
-        .then(res => {
-          const { token, user } = res.data;
-          if (token && user) {
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            Toastify({
-              text: "Signup successful! Redirecting...",
-              duration: 3000,
-              backgroundColor: "#4CAF50", 
-              close: true,
-              gravity: "top",
-              position: "right",
-            }).showToast();
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        if (localStorage.getItem('token')) {
             window.location.href = '/dashboard';
-          } else {
-            Toastify({
-              text: "Signup failed.",
-              duration: 3000,
-              backgroundColor: "#FF6347", 
-              close: true,
-              gravity: "top",
-              position: "right",
-            }).showToast();
-          }
-        })
-        .catch(err => {
-          Toastify({
-            text: 'email/username in use.',
-            duration: 3000,
-            backgroundColor: "#FF6347", 
-            close: true,
-            gravity: "top",
-            position: "right",
-          }).showToast();
-        })
-        .finally(() => {
-          // Hide loader
-          loader.style.display = 'none';
-          signupBtn.disabled = false;
-        });
-    });
+        }
 
-    avatarInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          avatarPreview.src = event.target.result;
-          avatarPreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  </script>
+        const signupBtn = document.getElementById('signup');
+        const avatarInput = document.getElementById('avatar');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const loader = document.getElementById('loader');
+
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    avatarPreview.src = event.target.result;
+                    avatarPreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        signupBtn.addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const avatar = avatarInput.files[0];
+
+            if (!username || !email || !password) {
+                Toastify({
+                    text: "Please fill all required fields",
+                    duration: 3000,
+                    className: "rounded-lg",
+                    style: {
+                        background: "#EF4444",
+                    }
+                }).showToast();
+                return;
+            }
+
+            loader.classList.remove('hidden');
+            signupBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('email', email);
+            formData.append('password', password);
+            if (avatar) formData.append('avatar', avatar);
+
+            axios.post('https://express-backend-sigma.vercel.app/auth/signup', formData)
+                .then(res => {
+                    const { token, user } = res.data;
+                    if (token && user) {
+                        localStorage.setItem('token', token);
+                        localStorage.setItem('user', JSON.stringify(user));
+                        Toastify({
+                            text: "Account created successfully! Redirecting...",
+                            duration: 3000,
+                            className: "rounded-lg",
+                            style: {
+                                background: "#10B981",
+                            }
+                        }).showToast();
+                        window.location.href = '/dashboard';
+                    }
+                })
+                .catch(() => {
+                    Toastify({
+                        text: "Username or email already in use",
+                        duration: 3000,
+                        className: "rounded-lg",
+                        style: {
+                            background: "#EF4444",
+                        }
+                    }).showToast();
+                })
+                .finally(() => {
+                    loader.classList.add('hidden');
+                    signupBtn.disabled = false;
+                });
+        });
+    </script>
 </body>
 </html>

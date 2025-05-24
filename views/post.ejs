@@ -230,7 +230,6 @@
                 }
             }
 
-            // Show comment actions only on own comments
             document.querySelectorAll('.comment-card').forEach((commentEl) => {
                 const authorId = commentEl.dataset.authorId;
                 const actionsEl = commentEl.querySelector('[id^="commentActions-"]');
@@ -239,13 +238,11 @@
                 }
             });
 
-            // Show post edit/delete only if current user owns the post
             const postAuthorId = "<%= post.author._id %>";
             if (!(currentUserId && currentUserId === postAuthorId)) {
                 document.getElementById('postActions').classList.add('hidden');
             }
 
-            // Like button handler
             const likeButton = document.getElementById('likeButton');
             const likeCountElement = document.getElementById('likeCount');
             const postId = "<%= post._id %>";
@@ -276,7 +273,6 @@
                 }
             });
 
-            // Comment form - only for logged users
             if (token) {
                 const commentSection = document.getElementById('comment-section');
                 const commentForm = document.createElement('div');
@@ -426,7 +422,6 @@
             const p = commentEl.querySelector('p');
             const originalContent = p.textContent;
 
-            // Replace paragraph with textarea and buttons
             p.innerHTML = `
                 <textarea id="editCommentContent-${commentId}" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md">${originalContent}</textarea>
                 <div class="mt-2 flex space-x-2">
@@ -453,7 +448,7 @@
             }
 
             try {
-                const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${commentId}`, {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}/${commentId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -482,7 +477,7 @@
             const token = localStorage.getItem('token');
 
             try {
-                const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${commentId}`, {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/comments/${postId}/${commentId}`, {
                     method: 'DELETE',
                     headers: {
                         Authorization: `Bearer ${token}`,

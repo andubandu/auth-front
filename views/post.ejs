@@ -215,7 +215,6 @@
             }).showToast();
         }
 
-        // Show/hide comment action buttons (edit/delete) only if the logged user owns the comment
         document.addEventListener('DOMContentLoaded', () => {
             getState();
 
@@ -323,12 +322,10 @@
             }
         });
 
-        // Functions for post edit modal
         function openEditModal() {
             document.getElementById('editModal').classList.remove('hidden');
             document.getElementById('editMsg').textContent = '';
 
-            // Pre-fill current values
             document.getElementById('editTitle').value = "<%= post.title.replace(/"/g, '&quot;') %>";
             document.getElementById('editContent').value = `<%= post.content.replace(/"/g, '&quot;') %>`;
         }
@@ -358,7 +355,7 @@
             }
 
             try {
-                const res = await fetch(`https://express-backend-sigma.vercel.app/posts/${postId}`, {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/posts/upd/${postId}`, {
                     method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -379,7 +376,6 @@
             }
         }
 
-        // Functions for post delete modal
         function openDeleteModal() {
             document.getElementById('deleteModal').classList.remove('hidden');
             document.getElementById('deleteMsg').textContent = '';
@@ -395,7 +391,7 @@
             const deleteMsg = document.getElementById('deleteMsg');
 
             try {
-                const res = await fetch(`https://express-backend-sigma.vercel.app/posts/${postId}`, {
+                const res = await fetch(`https://express-backend-sigma.vercel.app/posts/del/${postId}`, {
                     method: 'DELETE',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -414,8 +410,6 @@
                 deleteMsg.textContent = 'Error deleting post';
             }
         }
-
-        // Comment editing and deleting
 
         function startEdit(commentId) {
             const commentEl = document.getElementById(`comment-${commentId}`);

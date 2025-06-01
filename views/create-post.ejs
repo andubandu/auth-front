@@ -65,73 +65,90 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        function getState() {
-            const btns = document.getElementById('btns');
-            const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-            const userData = user ? JSON.parse(user) : null;
+  <script>
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+
+    function getState() {
+        const btns = document.getElementById('btns');
+        const token = getCookie('token');
+        const user = getCookie('user');
+ 
             
+
+        const userData = user ? JSON.parse(user) : null;
+        
             if (!token || !userData) {
-                btns.innerHTML = `
-                    <a href="/login" class="text-gray-600 hover:text-indigo-600 transition-colors">Login</a>
-                    <a href="/signup" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</a>
-                `;
-            } else {
-                btns.innerHTML = `
-                    <a href="/" class="text-gray-600 hover:text-indigo-600 transition-colors">Home</a>
-                    <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 transition-colors">Dashboard</a>
-                    <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
-                `;
-            }
+    btns.innerHTML = `
+        <a href="/login" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Login</a>
+        <a href="/signup" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</a>
+    `;
+} else if (userData && userData.roles && userData.roles[0] === 'admin') {
+    btns.innerHTML = `
+        <a href="/create" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Create Post</a>
+        <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Dashboard</a>
+        <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
+        <a href="/admin-panel" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Admin Panel</a>
+    `;
+} else {
+    btns.innerHTML = `
+        <a href="/create" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Create Post</a>
+        <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Dashboard</a>
+        <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
+    `;
+}
+    }
+
+    document.addEventListener('DOMContentLoaded', getState);
+
+    document.getElementById('createPostForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const title = document.getElementById('title').value.trim();
+        const content = document.getElementById('content').value.trim();
+        const media = document.getElementById('media').files[0];
+        const messageElement = document.getElementById('msg');
+
+        messageElement.textContent = '';
+
+        if (!title || !content) {
+            messageElement.textContent = "Title and content are required";
+            return;
         }
 
-        document.addEventListener('DOMContentLoaded', getState);
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        if (media) formData.append('media', media);
 
-        document.getElementById('createPostForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const title = document.getElementById('title').value.trim();
-            const content = document.getElementById('content').value.trim();
-            const media = document.getElementById('media').files[0];
-            const messageElement = document.getElementById('msg');
-
-            messageElement.textContent = '';
-
-            if (!title || !content) {
-                messageElement.textContent = "Title and content are required";
+        try {
+            const token = getCookie('token');
+            if (!token) {
+                window.location.href = '/login';
                 return;
             }
 
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('content', content);
-            if (media) formData.append('media', media);
+            const response = await axios.post('https://express-backend-sigma.vercel.app/posts/new', formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
 
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = '/login';
-                    return;
-                }
-
-                const response = await axios.post('https://express-backend-sigma.vercel.app/posts/new', formData, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
-
-                if (response?.data?.post?._id) {
-                    window.location.href = `/posts/${response.data.post._id}`;
-                } else {
-                    messageElement.textContent = 'Error creating post';
-                }
-
-            } catch (error) {
-                console.error('Error creating post:', error);
-                messageElement.textContent = error.response?.data?.message || 'Error creating post';
+            if (response?.data?.post?._id) {
+                window.location.href = `/posts/${response.data.post._id}`;
+            } else {
+                messageElement.textContent = 'Error creating post';
             }
-        });
-    </script>
+
+        } catch (error) {
+            console.error('Error creating post:', error);
+            messageElement.textContent = error.response?.data?.message || 'Error creating post';
+        }
+    });
+</script>
 </body>
 </html>

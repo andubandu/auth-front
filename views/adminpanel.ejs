@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      padding: 0.75em;
+      border: 1px solid #ccc;
+    }
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal {
+      background: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      max-width: 350px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .modal button {
+      margin: 0 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Admin Panel</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="user-table">
+      <% users.forEach(user => { %>
+        <% if (user.username !== currentUser.username) { %>
+          <tr data-user-id="<%= user._id %>">
+            <td><%= user.username %></td>
+            <td><%= user.email %></td>
+            <td><%= user.roles ? user.roles[0] : 'user' %></td>
+            <td class="status"><%= user.status %></td>
+            <td class="actions">
+              <% if (user.status !== 'active') { %>
+                <button class="action-btn" data-action="unban">Unban</button>
+              <% } else { %>
+                <button class="action-btn" data-action="permban">Permanently Ban</button>
+                <button class="action-btn" data-action="tempban">Temporarily Ban</button>
+                <button class="action-btn" data-action="verify">Verify</button>
+              <% } %>
+              <button class="delete-btn">Delete Account</button>
+            </td>
+          </tr>
+        <% } %>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal">
+      <div id="modal-message"></div>
+      <div style="margin-top:1em;">
+        <button id="modal-confirm">Confirm</button>
+        <button id="modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CORS_PROXY = 'https://corsproxy.io/?';
+    const BACKEND_URL = 'https://express-backend-sigma.vercel.app';
+
+    function showModal(message) {
+      return new Promise((resolve) => {
+        const backdrop = document.getElementById('modal-backdrop');
+        const msg = document.getElementById('modal-message');
+        const confirmBtn = document.getElementById('modal-confirm');
+        const cancelBtn = document.getElementById('modal-cancel');
+
+        msg.textContent = message;
+        backdrop.style.display = 'flex';
+
+        function cleanup(result) {
+          backdrop.style.display = 'none';
+          confirmBtn.removeEventListener('click', onConfirm);
+          cancelBtn.removeEventListener('click', onCancel);
+          resolve(result);
+        }
+        function onConfirm() { cleanup(true); }
+        function onCancel() { cleanup(false); }
+
+        confirmBtn.addEventListener('click', onConfirm);
+        cancelBtn.addEventListener('click', onCancel);
+      });
+    }
+
+    function attachEventListeners() {
+      document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const row = btn.closest('tr');
+          const userId = row.dataset.userId;
+          const action = btn.dataset.action;
+
+          const statusMap = {
+            unban: 'active',
+            permban: 'permaban',
+            tempban: 'tempban',
+            verify: 'verified'
+          };
+
+          const reasonMap = {
+            unban: 'unbanned by admin',
+            permban: 'permanently banned by admin',
+            tempban: 'temporarily banned for 1 week by admin',
+            verify: 'verified by admin'
+          };
+
+          const expiry = action === 'tempban' ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() : null;
+          const confirmed = await showModal(`Are you sure you want to ${action} this user?`);
+
+          if (!confirmed) return;
+
+          try {
+            const url = `${CORS_PROXY}${BACKEND_URL}/users/status/${userId}`;
+
+            const response = await fetch(url, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1]}` },
+              body: JSON.stringify({
+                status: statusMap[action],
+                statusReason: reasonMap[action],
+                statusExpiry: expiry
+              })
+            });
+
+            if (response.ok) {
+              alert(`User successfully ${action}ed.`);
+              location.reload();
+            } else {
+              const err = await response.json();
+              alert(`Failed to ${action} user: ${err.error || 'Unknown error'}`);
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Request failed.');
+          }
+        });
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const row = btn.closest('tr');
+          const userId = row.dataset.userId;
+          const confirmed = await showModal('Are you sure you want to delete this user? This is permanent.');
+
+          if (!confirmed) return;
+
+          try {
+            const url = `${CORS_PROXY}${BACKEND_URL}/users/del/${userId}`;
+            const response = await fetch(url, {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1]}` },
+            });
+
+            if (response.ok) {
+              alert('User deleted successfully.');
+              location.reload();
+            } else {
+              const err = await response.json();
+              alert(`Failed to delete user: ${err.error || 'Unknown error'}`);
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Delete request failed.');
+          }
+        });
+      });
+    }
+
+    attachEventListeners();
+  </script>
+</body>
+</html>

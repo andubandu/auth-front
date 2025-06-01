@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Accout Moderated</title>
+  <script>
+    function handleLogout() {
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      window.location.href = '/login';
+      // alert('You have been logged out');
+    }
+
+    function addHover(el) {
+      el.classList.remove('from-blue-400', 'to-blue-600', 'border-blue-700');
+      el.classList.add('from-blue-500', 'to-blue-700', 'border-blue-800');
+    }
+
+    function removeHover(el) {
+      el.classList.remove('from-blue-500', 'to-blue-700', 'border-blue-800');
+      el.classList.add('from-blue-400', 'to-blue-600', 'border-blue-700');
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    window.onload = () => {
+      lucide.createIcons();
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-200 to-purple-200 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+
+    <div class="bg-gradient-to-b from-red-500 to-red-700 rounded-t-xl border-b border-red-800 shadow-inner p-4 text-center">
+      <h1 class="text-white text-2xl font-bold tracking-tight drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)]">
+        Account Moderated
+      </h1>
+    </div>
+
+    <div class="bg-gradient-to-b from-white to-gray-100 rounded-b-xl border border-t-0 border-gray-300 shadow-xl p-6">
+      <div class="flex flex-col items-center space-y-6">
+        <div class="bg-red-100 rounded-full p-3">
+          <i data-lucide="alert-circle" class="text-red-600 w-12 h-12"></i>
+        </div>
+
+        <p class="text-gray-700 text-center leading-relaxed">
+          <%= message || "Your account has been moderated!!" %>
+        </p>
+
+        <button
+          class="relative overflow-hidden mt-6 px-8 py-3 rounded-full font-bold text-white text-lg transition-all duration-300
+                 bg-gradient-to-b from-blue-400 to-blue-600 border-b-4 border-blue-700"
+          onmouseenter="addHover(this)"
+          onmouseleave="removeHover(this)"
+          onclick="handleLogout()"
+        >
+          <span class="absolute inset-0 bg-white opacity-10 rounded-full transition-all duration-300 scale-0"></span>
+          LOG OUT
+        </button>
+
+        <div class="mt-4 text-sm text-gray-500">
+          If you believe this is an error, please click <a href="/support">here</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-4 bg-gradient-to-b from-white opacity-30 rounded-b-full mx-auto w-3/4 blur-sm"></div>
+  </div>
+</body>
+</html>

@@ -34,12 +34,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
         async function fetchPosts() {
             const postsContainer = document.getElementById('posts');
             const loader = document.getElementById('loader');
-            const token = localStorage.getItem('token');
-            const userStr = localStorage.getItem('user');
-            const currentUser = userStr ? JSON.parse(userStr) : null;
+            const token = getCookie('token');
+            const userStr = getCookie('user');
+            const currentUser = userStr ? JSON.parse(decodeURIComponent(userStr)) : null;
 
             loader.classList.remove('hidden');
             postsContainer.innerHTML = '';
@@ -143,13 +150,13 @@
 
         function attachLikeButtonHandlers() {
             const buttons = document.querySelectorAll('[data-id]');
-            const token = localStorage.getItem('token');
+            const token = getCookie('token');
 
             buttons.forEach(button => {
                 button.addEventListener('click', async () => {
                     const postId = button.dataset.id;
-                    const userStr = localStorage.getItem('user');
-                    const currentUser = userStr ? JSON.parse(userStr) : null;
+                    const userStr = getCookie('user');
+                    const currentUser = userStr ? JSON.parse(decodeURIComponent(userStr)) : null;
 
                     if (!token || !currentUser) {
                         showToast('You need to be logged in to like a post', '#ff6b6b');
@@ -207,22 +214,31 @@
 
         function getState() {
             const btns = document.getElementById('btns');
-            const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-            const userData = user ? JSON.parse(user) : null;
+            const token = getCookie('token');
+            const user = getCookie('user');
+            const userData = user ? JSON.parse(decodeURIComponent(user)) : null;
             
             if (!token || !userData) {
-                btns.innerHTML = `
-                    <a href="/login" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Login</a>
-                    <a href="/signup" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</a>
-                `;
-            } else {
-                btns.innerHTML = `
-                    <a href="/create" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Create Post</a>
-                    <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Dashboard</a>
-                    <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
-                `;
-            }
+    btns.innerHTML = `
+        <a href="/login" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Login</a>
+        <a href="/signup" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</a>
+    `;
+} else if (userData && userData.roles && userData.roles[0] === 'admin') {
+    btns.innerHTML = `
+        <a href="/create" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Create Post</a>
+        <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Dashboard</a>
+        <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
+        <a href="/admin-panel" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Admin Panel</a>
+    `;
+} else {
+    btns.innerHTML = `
+        <a href="/create" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Create Post</a>
+        <a href="/dashboard" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Dashboard</a>
+        <a href="/profile/${userData.username}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Profile</a>
+    `;
+}
+
+
         }
 
         document.addEventListener('DOMContentLoaded', () => {

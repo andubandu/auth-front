@@ -112,9 +112,16 @@
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        // Helper to get cookie value by name
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
         let currentUserId = null;
-        const token = localStorage.getItem('token');
-        const userStr = localStorage.getItem('user');
+        const token = getCookie('token');
+        const userStr = getCookie('user');
 
         if (!token || !userStr) {
             Toastify({
@@ -128,7 +135,7 @@
             window.location.href = '/login';
         }
 
-        const user = JSON.parse(userStr);
+        const user = JSON.parse(decodeURIComponent(userStr));
         currentUserId = user.id || user._id;
 
         function updateUserInfo(userData) {
@@ -152,7 +159,7 @@
         .then(res => {
             const freshUser = res.data;
             updateUserInfo(freshUser);
-            localStorage.setItem('user', JSON.stringify(freshUser));
+            document.cookie = `user=${encodeURIComponent(JSON.stringify(freshUser))}; path=/`;
             currentUserId = freshUser.id || freshUser._id;
         })
         .catch(err => {
@@ -168,8 +175,8 @@
         });
 
         function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             window.location.href = '/login';
         }
 
@@ -211,7 +218,7 @@
                 }
 
                 const updatedUser = await res.json();
-                localStorage.setItem('user', JSON.stringify(updatedUser));
+                document.cookie = `user=${encodeURIComponent(JSON.stringify(updatedUser))}; path=/`;
                 updateUserInfo(updatedUser);
 
                 Toastify({

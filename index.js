@@ -89,7 +89,7 @@ app.get('/admin-panel', checkAdminOrModerator, async (req, res) => {
     const token = req.cookies?.token;
     if (!token) return res.status(403).render('error', { message: 'Access denied' });
 
-    const usersResponse = await fetch('http://localhost:3000/api/users', {
+    const usersResponse = await fetch('https://express-backend-sigma.vercel.app/api/users', {
       headers: { Authorization: `Bearer ${token}` }
     });
 

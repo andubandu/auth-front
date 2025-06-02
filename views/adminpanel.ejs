@@ -63,6 +63,7 @@
                 <button class="action-btn" data-action="tempban">Temporarily Ban</button>
                 <button class="action-btn" data-action="verify">Verify</button>
               <% } %>
+              <button class="make-admin-btn">Make Admin</button>
               <button class="delete-btn">Delete Account</button>
             </td>
           </tr>
@@ -137,10 +138,14 @@
 
           try {
             const url = `${CORS_PROXY}${BACKEND_URL}/users/status/${userId}`;
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
 
             const response = await fetch(url, {
               method: 'PUT',
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1]}` },
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
               body: JSON.stringify({
                 status: statusMap[action],
                 statusReason: reasonMap[action],
@@ -162,6 +167,41 @@
         });
       });
 
+      document.querySelectorAll('.make-admin-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const row = btn.closest('tr');
+          const userId = row.dataset.userId;
+          const confirmed = await showModal('Are you sure you want to promote this user to admin?');
+
+          if (!confirmed) return;
+
+          try {
+            const url = `${CORS_PROXY}${BACKEND_URL}/users/roles/${userId}`;
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+
+            const response = await fetch(url, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ roles: ['admin'] })
+            });
+
+            if (response.ok) {
+              alert('User promoted to admin.');
+              location.reload();
+            } else {
+              const err = await response.json();
+              alert(`Failed to promote: ${err.error || 'Unknown error'}`);
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Promotion request failed.');
+          }
+        });
+      });
+
       document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
           const row = btn.closest('tr');
@@ -172,9 +212,14 @@
 
           try {
             const url = `${CORS_PROXY}${BACKEND_URL}/users/del/${userId}`;
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+
             const response = await fetch(url, {
               method: 'DELETE',
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1]}` },
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
             });
 
             if (response.ok) {

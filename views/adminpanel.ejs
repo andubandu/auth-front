@@ -63,7 +63,11 @@
                 <button class="action-btn" data-action="tempban">Temporarily Ban</button>
                 <button class="action-btn" data-action="verify">Verify</button>
               <% } %>
-              <button class="make-admin-btn">Make Admin</button>
+              <% if (user.roles && user.roles.includes('admin')) { %>
+                <button class="demote-admin-btn">Demote to User</button>
+              <% } else { %>
+                <button class="make-admin-btn">Make Admin</button>
+              <% } %>
               <button class="delete-btn">Delete Account</button>
             </td>
           </tr>
@@ -83,7 +87,6 @@
   </div>
 
   <script>
-    const CORS_PROXY = 'https://corsproxy.io/?';
     const BACKEND_URL = 'https://express-backend-sigma.vercel.app';
 
     function showModal(message) {
@@ -137,7 +140,7 @@
           if (!confirmed) return;
 
           try {
-            const url = `${CORS_PROXY}${BACKEND_URL}/users/status/${userId}`;
+            const url = `${BACKEND_URL}/users/status/${userId}`;
             const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
 
             const response = await fetch(url, {
@@ -176,7 +179,7 @@
           if (!confirmed) return;
 
           try {
-            const url = `${CORS_PROXY}${BACKEND_URL}/users/roles/${userId}`;
+            const url = `${BACKEND_URL}/users/roles/${userId}`;
             const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
 
             const response = await fetch(url, {
@@ -202,6 +205,41 @@
         });
       });
 
+      document.querySelectorAll('.demote-admin-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const row = btn.closest('tr');
+          const userId = row.dataset.userId;
+          const confirmed = await showModal('Are you sure you want to demote this admin to a regular user?');
+
+          if (!confirmed) return;
+
+          try {
+            const url = `${BACKEND_URL}/users/roles/${userId}`;
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+
+            const response = await fetch(url, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ roles: ['user'] })
+            });
+
+            if (response.ok) {
+              alert('User demoted to regular user.');
+              location.reload();
+            } else {
+              const err = await response.json();
+              alert(`Failed to demote: ${err.error || 'Unknown error'}`);
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Demotion request failed.');
+          }
+        });
+      });
+
       document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
           const row = btn.closest('tr');
@@ -211,7 +249,7 @@
           if (!confirmed) return;
 
           try {
-            const url = `${CORS_PROXY}${BACKEND_URL}/users/del/${userId}`;
+            const url = `${BACKEND_URL}/users/del/${userId}`;
             const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
 
             const response = await fetch(url, {
